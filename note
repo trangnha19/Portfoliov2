@@ -1,0 +1,150 @@
+Chào Trang Nhã, yêu cầu đổi tên dự án này rất hợp lý và giúp bộ hồ sơ kinh nghiệm trông đậm chất chuyên nghiệp quốc tế hơn hẳn!
+
+Việc đổi từ **Yến Sào Nam An ERP System** thành **Nam An Bird's Nest ERP System** sẽ được cập nhật đồng loạt tại mọi vị trí trong mã nguồn (từ danh sách Card trải nghiệm trên Landing Page, nhãn tiêu đề trên Banner, cho đến các key quản lý State điều hướng của React).
+
+Dưới đây là file `plan.md` đã được chuẩn hóa tên gọi mới, cùng đoạn prompt hoàn chỉnh để bạn dán thẳng vào terminal của **Claude Code** thực thi đồng bộ ngay lập tức.
+
+---
+
+### 📑 Bước 1: Nội dung file `plan.md` hoàn chỉnh mới nhất (Hãy copy và lưu đè)
+
+```markdown
+# Kế Hoạch Xây Dựng Portfolio Website - Nguyễn Thị Trang Nhã (Project Rebranding Spec)
+
+## 1. Cấu Trúc Thư Mục Hệ Thống & Tài Nguyên Thực Tế (Relative Paths Only)
+Mọi đường dẫn tài nguyên được cấu hình chính xác tuyệt đối theo sơ đồ quản lý tệp tin thực tế trong folder `portfolio/`:
+- Tệp tin CV PDF gốc: `./CV_Nguyen Thi Trang Nha.pdf`
+- Sơ đồ dự án 1: Chatbot TravelAI (`./ai/`)
+- Sơ đồ dự án 2: Nam An Bird's Nest ERP System (`./yen/`) -> *Đã cập nhật tên gọi mới*
+- Sơ đồ dự án 3: Wonder Wood ERP (`./go/`)
+- Sơ đồ dự án 4: Yummy Food ERP (`./tauhu/`)
+- Sơ đồ dự án 5: The SHEA Mobile App (`./theshea/`)
+
+---
+
+## 2. Thiết Kế Hệ Thống Đa Ngôn Ngữ & Quy Tắc Gióng Hàng
+* **Quản lý Trạng thái (React Language State)**: Chuyển đổi động dữ liệu text hiển thị trên toàn bộ trang web thông qua object từ điển dịch thuật (`TRANSLATIONS`).
+* **Trục gióng hàng Header**: Mọi phân đoạn nội dung lớn trên Landing Page sử dụng chung một cấu trúc container bọc ngoài (`max-w-7xl mx-auto px-6 md:px-12`) để gióng thẳng hàng lề trái tuyệt đối với chữ "TRANG NHA" trên Header.
+* **Mã hóa UTF-8 bắt buộc**: Toàn bộ chuỗi nội dung dịch thuật tiếng Việt có dấu phải được viết trực tiếp bằng ký tự Unicode thuần túy, nghiêm cấm mã hóa tự động thành dạng escape sequences (`\uXXXX`).
+
+---
+
+## 3. Kiến Trúc Điều Hướng Dự Án (React Multi-Project Management)
+Quản lý luồng hiển thị bằng state `const [selectedProject, setSelectedProject] = useState(null);`. 
+* Khi click vào dự án Yến Sào cũ, React sẽ đặt trạng thái chính thức là: `setSelectedProject("Nam An Bird's Nest ERP System")`.
+* Hệ thống Sub-Tabs điều hướng phụ ẩn hoàn toàn tab USER STORY.
+
+---
+
+## 4. Chi Tiết Thực Thi Các Phân Đoạn Giao Diện (UI Component Blueprint)
+* Tab WORKFLOW và tab UC SPEC hiển thị dạng lưới hàng đôi song song (1 hàng chứa 2 khối ô ảnh sơ đồ nằm song song), không render dòng chữ tiêu đề phụ vạch vàng lề trái.
+
+---
+
+## 5. Cấu Trúc Ánh Xạ Bản Đồ Dữ Liệu Dịch Thuật Đồng Bộ (Rebranded Experience Dictionary)
+Tên dự án thứ 2 đã được cập nhật chính xác trên cả hai phiên bản `EN` và `VI`:
+
+```javascript
+const TRANSLATIONS = {
+  EN: {
+    // ... (Các phần nav, hero, about, skills giữ nguyên)
+    experience: {
+      sub: "03 — Experience", title: "Work Experience",
+      fresherRole: "Business Analyst Fresher",
+      internRole: "Business Analyst Intern",
+      viewDetails: "View Details →", back: "← Back",
+      travelai: { /* ... */ },
+      yensao: {
+        title: "Nam An Bird's Nest ERP System", // Cập nhật tên tiếng Anh chuẩn spec
+        b1: "Gathered and analyzed business requirements from multiple departments",
+        b2: "Created BPMN, sequence diagrams, ERD, DFD for sales, inventory, and warehouse workflows",
+        b3: "Designed wireframes and interactive prototypes using Figma",
+        b4: "Worked with developers and testers to support UAT and issue clarification"
+      },
+      wonderwood: { /* ... */ },
+      yummyfood: { /* ... */ },
+      theshea: { /* ... */ }
+    }
+  },
+  VI: {
+    // ... (Các phần nav, hero, about, skills giữ nguyên)
+    experience: {
+      sub: "03 — Kinh nghiệm", title: "Kinh Nghiệm Làm Việc",
+      fresherRole: "Chuyên viên Phân tích Nghiệp vụ (Fresher Business Analyst)",
+      internRole: "Thực tập sinh Phân tích Nghiệp vụ (Business Analyst Intern)",
+      viewDetails: "Xem Chi Tiết →", back: "← Quay Lại",
+      travelai: { /* ... */ },
+      yensao: {
+        title: "Hệ thống Hoạch định Nguồn lực Doanh nghiệp (ERP) Yến Sào Nam An", // Giữ nguyên tên tiếng Việt trực quan
+        b1: "Thu thập và phân tích yêu cầu nghiệp vụ thực tế từ nhiều phòng ban chức năng trong doanh nghiệp",
+        b2: "Thiết kế biểu đồ BPMN, biểu đồ tuần tự (sequence diagrams), ERD, DFD cho luồng bán hàng, tồn kho và kho bãi",
+        b3: "Xây dựng giao diện wireframe và các bản mẫu tương tác trực quan (interactive prototypes) bằng Figma",
+        b4: "Làm việc với lập trình viên và kiểm thử viên để hỗ trợ quy trình UAT và làm rõ các vướng mắc hệ thống"
+      },
+      wonderwood: { /* ... */ },
+      yummyfood: { /* ... */ },
+      theshea: { /* ... */ }
+    }
+  }
+};
+
+// Bản đồ dữ liệu chi tiết màn hình đặc tả cũng đổi key quản lý tương ứng
+const NAM_AN_ERP_TABS_DATA = {
+  WORKFLOW: {
+    layoutType: "grid",
+    sections: [ { title: "", items: ["./yen/workflow1.jpg", "./yen/workflow2.jpg", "./yen/workflow3.jpg", "./yen/workflow4.jpg"] } ]
+  },
+  'USE CASE': {
+    layoutType: "layered",
+    sections: [
+      { title: "OVERALL USE CASE DIAGRAM", isCentered: true, items: ["./yen/usecaseoverall.jpg"] },
+      { title: "LEVEL 1 USE CASE DIAGRAM", isCentered: false, items: ["./yen/usecaselevel1_1.jpg", "./yen/usecaselevel1_2.jpg", "./yen/usecaselevel1_3.jpg", "./yen/usecaselevel1_4.jpg", "./yen/usecaselevel1_5.jpg", "./yen/usecaselevel1_6.jpg"] },
+      { title: "LEVEL 2 USE CASE DIAGRAM", isCentered: false, items: ["./yen/usecaselevel2_1.jpg", "./yen/usecaselevel2_2.jpg", "./yen/usecaselevel2_3.jpg", "./yen/usecaselevel2_4.jpg", "./yen/usecaselevel2_5.jpg", "./yen/usecaselevel2_6.jpg", "./yen/usecaselevel2_7.jpg", "./yen/usecaselevel2_8.jpg", "./yen/usecaselevel2_9.jpg", "./yen/usecaselevel2_10.jpg", "./yen/usecaselevel2_11.jpg"] }
+    ]
+  },
+  'UC SPEC': {
+    layoutType: "grid",
+    sections: [ { title: "", items: ["./yen/ucspe1.jpg", "./yen/ucspe2.jpg"] } ]
+  },
+  'SEQUENCE DIAGRAM': {
+    layoutType: "grid",
+    sections: [ { title: "SEQUENCE DIAGRAM", items: ["./yen/se1.jpg", "./yen/se2.jpg", "./yen/se3.jpg", "./yen/se4.jpg"] } ]
+  },
+  FIGMA: {
+    layoutType: "figma_layered",
+    sections: [
+      { title: "UX DESIGN", items: ["./yen/fig1.jpg"], hasButtons: true },
+      { title: "UI DESIGN", items: ["./yen/fig2.jpg", "./yen/fig3.jpg", "./yen/fig4.jpg", "./yen/fig5.jpg", "./yen/fig6.jpg", "./yen/fig7.jpg", "./yen/fig8.jpg", "./yen/fig9.jpg"], hasButtons: false }
+    ]
+  }
+};
+
+```
+
+```
+
+---
+
+### 🚀 Bước 2: Prompt dán thẳng vào Terminal của Claude Code
+
+```markdown
+Hãy đọc thật kỹ file `plan.md` vừa cập nhật để thực hiện thay đổi tên dự án Yến Sào đồng loạt tại mọi vị trí trong file `index.html`:
+
+1. **Đồng bộ tên thương hiệu mới (Project Rebranding Update)**:
+   - Thay thế toàn bộ cụm từ cũ "Yến Sào Nam An ERP System" bằng tên tiếng Anh chính thức mới: "Nam An Bird's Nest ERP System".
+   - Cập nhật chuỗi text này tại phần tiêu đề tiếng Anh của từ điển `TRANSLATIONS.EN.experience.yensao.title`.
+   - Cập nhật tại hàm kiểm tra điều kiện mở màn hình chi tiết dự án trong React: Khi click nút xem chi tiết của card dự án này, đặt lệnh chạy `setSelectedProject("Nam An Bird's Nest ERP System")`.
+   - Cập nhật biến so sánh con trỏ dữ liệu động: `selectedProject === "Nam An Bird's Nest ERP System" ? NAM_AN_ERP_TABS_DATA[activeSubTab] : ...`
+   - Đổi tên hằng số chứa mảng dữ liệu sơ đồ của dự án này từ `YEN_SAO_TABS_DATA` thành `NAM_AN_ERP_TABS_DATA` để mã nguồn mạch lạc và chuyên nghiệp.
+
+2. **Duy trì hiển thị nội dung Banner chi tiết**:
+   - Khi `selectedProject === "Nam An Bird's Nest ERP System"`, trên dải Banner màu xanh Navy sẫm, phần breadcrumb hiển thị nhỏ phía trên sẽ là `Portfolio/ Experience / Nam An Bird's Nest ERP System`, và dòng tiêu đề lớn hiển thị chữ Serif font Playfair sang trọng sẽ đổi thành `Nam An Bird's Nest ERP System` (nếu giao diện đang ở ngôn ngữ tiếng Anh `EN`). Nếu giao diện đang ở tiếng Việt `VI`, banner hiển thị tên tiếng Việt tương ứng là `Hệ thống Hoạch định Nguồn lực Doanh nghiệp (ERP) Yến Sào Nam An`.
+
+3. **Bảo toàn toàn bộ các quy tắc giao diện đã fix**:
+   - Viết trực tiếp nội dung bằng tiếng Việt Unicode thuần túy có dấu, cấm tuyệt đối việc Claude tự động convert chữ thành các mã gạch chéo ngược (`\uXXXX`) làm lỗi hiển thị họ tên "Nguyễn Thị Trang Nhã".
+   - Bộ đôi nút bấm Hero (Download CV link mở tab mới và About Me) nằm ngang song song trên 1 hàng, tiêu đề các khối gióng thẳng hàng lề trái pixel-perfect theo trục chữ logo của Header.
+   - Màn hình xem chi tiết tài liệu ẩn tab USER STORY; tab WORKFLOW và UC SPEC hiển thị dạng lưới 2 cột hàng đôi song song không chứa tiêu đề phụ vạch vàng lề trái. Bộ nút bấm `View Details →` của cả 5 dự án đồng bộ mang sắc màu vàng gold chủ đạo.
+
+Hãy thực thi viết lại toàn bộ mã nguồn file `index.html` hoàn mỹ nhất cho tôi ngay bây giờ.
+
+```

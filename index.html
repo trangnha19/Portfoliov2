@@ -1,0 +1,2216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nguyễn Thị Trang Nhã – BA Portfolio</title>
+  <meta name="description" content="Portfolio of Nguyễn Thị Trang Nhã – Business Analyst with hands-on experience in requirement elicitation, BPMN/UML modeling, and wireframing." />
+
+  <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide-react/dist/umd/lucide-react.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            figmaDark:    '#1a2b49',
+            figmaGold:    '#c2a67f',
+            figmaLightBg: '#fbfbfb',
+            figmaCardBg:  '#ffffff',
+            figmaTextDark:'#1f2937',
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            sans:  ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+    if (window.LucideReact) window.lucide = window.LucideReact;
+  </script>
+
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { scroll-behavior: smooth; margin: 0; padding: 0; overflow-x: clip; }
+    body { font-family: 'Inter', system-ui, sans-serif; background: #fbfbfb; }
+    section[id] { scroll-margin-top: 72px; }
+
+    /* ── Hero diagonal clip ── */
+    .hero-clip { clip-path: polygon(0 0, 100% 0, 85% 100%, 0 100%); }
+
+    /* ── Polaroid photo frame (styling fully in Tailwind JSX) ── */
+    .photo-frame { display: inline-block; }
+
+    /* ── Skill row card ── */
+    .skill-row-card {
+      background: #ffffff;
+      border: 1px solid #f0f0f0;
+      border-radius: 16px;
+      padding: 24px 28px;
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      box-shadow: 0 1px 8px rgba(26,43,73,0.06);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .skill-row-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(26,43,73,0.14);
+    }
+    .skill-icon-box {
+      width: 60px; height: 60px;
+      flex-shrink: 0;
+      background: #f3f4f6;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .skill-icon-box img { width: 38px; height: 38px; object-fit: contain; }
+
+    /* ── Project card ── */
+    .proj-card {
+      background: #1a2b49;
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.22s ease, box-shadow 0.22s ease;
+    }
+    .proj-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 48px rgba(0,0,0,0.3);
+    }
+    .proj-card-img { width: 100%; height: 180px; object-fit: cover; display: block; }
+    .proj-card-body { padding: 20px 22px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+    .proj-card-btn {
+      width: 100%;
+      display: flex; align-items: center; justify-content: center;
+      background: #fff; color: #1a2b49;
+      font-weight: 600; font-size: 13px;
+      padding: 10px 20px; border-radius: 8px; border: none; cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      margin-top: auto;
+    }
+    .proj-card-btn:hover { background: #c2a67f; color: #fff; }
+
+    /* ── Contact card (dark bg on dark section) ── */
+    .contact-card {
+      display: flex; align-items: center; gap: 14px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 16px;
+      padding: 22px 32px;
+      text-decoration: none;
+      font-weight: 500; font-size: 14px;
+      color: #ffffff;
+      transition: all 0.22s ease;
+      flex: 1;
+      min-width: 200px;
+    }
+    .contact-card:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(255,255,255,0.40);
+      transform: translateY(-3px);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp .45s ease both; }
+
+    /* ── Doc images ── */
+    .doc-img {
+      display: block; max-width: 100%; max-height: 70vh;
+      width: 100%; height: auto; margin: 0 auto; object-fit: contain;
+    }
+    .doc-img-flat {
+      display: block; max-width: 100%; max-height: 85vh;
+      width: 100%; height: auto; margin: 0 auto; object-fit: contain;
+    }
+    .doc-scroll::-webkit-scrollbar { width: 6px; }
+    .doc-scroll::-webkit-scrollbar-thumb { background: #c2a67f44; border-radius: 3px; }
+
+    /* ── Mobile responsive ── */
+    @media (max-width: 767px) {
+      .hero-clip { clip-path: none; }
+    }
+  </style>
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useRef } = React;
+
+/* ─────────────────────────────────────────────────────────────
+   ICON LAYER
+───────────────────────────────────────────────────────────── */
+const {
+  Mail, Phone, Linkedin, Download, ArrowRight, ArrowLeft,
+  Monitor, Users, RefreshCw, ExternalLink, Play, Check,
+} = window.lucide || {};
+
+const Svg = ({ size = 16, className = '', children, style }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size}
+    viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+    className={className} style={style}>{children}</svg>
+);
+
+const IcoMail         = p => Mail         ? <Mail         {...p}/> : <Svg {...p}><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></Svg>;
+const IcoPhone        = p => Phone        ? <Phone        {...p}/> : <Svg {...p}><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-5.99-5.99 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.59 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 9.91a16 16 0 0 0 6.08 6.08l1.17-1.17a2 2 0 0 1 2.11-.45c.9.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></Svg>;
+const IcoLinkedin     = p => Linkedin     ? <Linkedin     {...p}/> : <Svg {...p}><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></Svg>;
+const IcoDownload     = p => Download     ? <Download     {...p}/> : <Svg {...p}><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="3" x2="12" y2="15"/></Svg>;
+const IcoArrow        = p => ArrowRight   ? <ArrowRight   {...p}/> : <Svg {...p}><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></Svg>;
+const IcoBack         = p => ArrowLeft    ? <ArrowLeft    {...p}/> : <Svg {...p}><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></Svg>;
+const IcoExternalLink = p => ExternalLink ? <ExternalLink {...p}/> : <Svg {...p}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></Svg>;
+const IcoPlay         = p => Play         ? <Play         {...p}/> : <Svg {...p}><polygon points="5 3 19 12 5 21 5 3"/></Svg>;
+const IcoChevronUp    = p => <Svg {...p}><path d="m18 15-6-6-6 6"/></Svg>;
+const IcoLink         = p => <Svg {...p}><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></Svg>;
+
+const FigmaLogo = ({ size = 22 }) => (
+  <svg width={size} height={size} viewBox="0 0 38 57" fill="none">
+    <path d="M19 28.5a9.5 9.5 0 1 1 19 0 9.5 9.5 0 0 1-19 0z"               fill="#1ABCFE"/>
+    <path d="M0 47.5A9.5 9.5 0 0 1 9.5 38H19v9.5a9.5 9.5 0 1 1-19 0z"       fill="#0ACF83"/>
+    <path d="M19 0v19h9.5a9.5 9.5 0 1 0 0-19H19z"                            fill="#FF7262"/>
+    <path d="M0 9.5a9.5 9.5 0 0 0 9.5 9.5H19V0H9.5A9.5 9.5 0 0 0 0 9.5z"   fill="#F24E1E"/>
+    <path d="M0 28.5a9.5 9.5 0 0 0 9.5 9.5H19V19H9.5A9.5 9.5 0 0 0 0 28.5z" fill="#A259FF"/>
+  </svg>
+);
+
+/* ─────────────────────────────────────────────────────────────
+   HELPERS
+───────────────────────────────────────────────────────────── */
+const goTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+
+/* ── Display-name overrides: short data labels → full display names ── */
+const SECTION_DISPLAY_NAMES = {
+  'UC SPEC':   'USE CASE SPECIFICATION',
+  'ERD':       'ENTITY RELATIONSHIP DIAGRAM (ERD)',
+  'DFD':       'DATA FLOW DIAGRAM (DFD)',
+  'UX DESIGN': 'UX SCREEN ARCHITECTURE',
+  'UI DESIGN': 'UI INTERFACE DESIGN',
+};
+const sectionDisplay = label => SECTION_DISPLAY_NAMES[label] || label;
+
+/* ── Centered section divider (large) — used as tab-level & doc-section headers ── */
+const SectionDivider = ({ label }) => (
+  <div className="text-center flex flex-col items-center justify-center my-14 select-none">
+    <h3 className="font-sans text-figmaTextDark text-xl md:text-2xl font-bold tracking-widest uppercase">
+      {sectionDisplay(label)}
+    </h3>
+    <div className="w-16 h-[3px] bg-figmaGold rounded-full mt-2.5" />
+  </div>
+);
+
+const SecLabel = ({ label, onDark = false }) => (
+  <div className="flex items-center gap-3 mb-5">
+    <div className={`h-px w-8 flex-shrink-0 ${onDark ? 'bg-figmaGold/60' : 'bg-figmaDark/30'}`} />
+    <span className="text-figmaGold text-[13px] font-medium tracking-[0.12em]">{label}</span>
+  </div>
+);
+
+/* ── Sub-section title — LEFT-ALIGNED, used for detail diagram headings within a group ── */
+const SectionTitle = ({ title }) => (
+  <div className="flex items-center gap-3 mt-8 mb-5 select-none">
+    <div className="w-[3px] h-5 bg-figmaGold rounded-full flex-shrink-0" />
+    <span className="font-sans font-semibold text-figmaTextDark text-[13px] tracking-[0.10em] uppercase">
+      {sectionDisplay(title)}
+    </span>
+  </div>
+);
+
+/* ─────────────────────────────────────────────────────────────
+   TRANSLATIONS
+───────────────────────────────────────────────────────────── */
+const TRANSLATIONS = {
+  EN: {
+    nav: { home: 'HOME', about: 'ABOUT', skills: 'SKILLS', projects: 'PROJECTS', contact: 'CONTACT' },
+    hero: {
+      eyebrow: 'Business Analyst',
+      name1: 'Nguyễn Thị',
+      name2: 'Trang Nhã',
+      bio: 'I am a Business Analyst with practical experience in requirement elicitation, business process modeling (BPMN/UML), and wireframe design. I enjoy analyzing business challenges and translating business requirements into effective system solutions that support organizational goals.',
+      downloadCV: 'Download CV',
+      aboutMe: 'About Me',
+      badge1: 'Available for work',
+      badge2: 'IELTS 6.5 - HSK3',
+    },
+    about: {
+      label: '01 — About',
+      heading: 'Who',
+      headingGold: 'I Am',
+      p1Pre: "I'm a ", p1Bold: 'proactive, responsible, and self-motivated', p1Post: ' individual who is always willing to learn and adapt to new knowledge, domains, and working environments.',
+      p2Pre: 'With a strong passion for ', p2Bold: 'business analysis and problem-solving', p2Post: ', I continuously improve my skills through teamwork, effective communication, and collaboration with stakeholders and development teams to deliver practical solutions.',
+      p3Pre: 'As a ', p3Bold: 'growth-oriented professional', p3Post: ', I aim to become a Middle-Level Business Analyst within the next 1–2 years by strengthening my business analysis expertise, system thinking, and solution design skills.',
+      domainsTitle: 'Domains',
+      domains: [
+        'ARTIFICIAL INTELLIGENCE (AI)',
+        'MANUFACTURING',
+        'HUMAN RESOURCES',
+        'FINANCE & ACCOUNTING',
+        'FOOD & BEVERAGE (F&B)',
+      ],
+    },
+    skills: {
+      label: '02 — Skills',
+      headingGold: 'My',
+      heading: 'Skills',
+      viewDetails: 'View Details',
+      cards: [
+        {
+          logo: './main/logo1.png',
+          title: 'SYSTEM DESIGN',
+          tags: ['BPMN', 'User Story', 'Use Case', 'Activity Diagram', 'Sequence Diagram', 'ERD', 'DFD'],
+          desc: 'Experienced in creating BPMN diagrams, User Story, Use Cases, Activity Diagrams, Sequence Diagrams, DFDs, and ERDs to analyze requirements and model business processes, data structures, and system workflows. Capable of translating business requirements into structured models and effective system solutions.',
+          btn: true,
+        },
+        {
+          logo: './main/logo2.png',
+          title: 'UX/UI DESIGN',
+          tags: ['Figma'],
+          desc: 'Experienced in using Figma to create wireframes, prototypes, and user interfaces. Skilled at transforming business requirements into intuitive UI/UX solutions that enhance usability and improve user experience.',
+          btn: true,
+        },
+        {
+          logo: './main/logo3.svg',
+          title: 'VIBE CODING',
+          tags: ['Claude', 'Gemini', 'ChatGPT'],
+          desc: 'Proficient in leveraging AI tools such as Claude, Gemini, and ChatGPT to support business analysis, rapid prototyping, and solution ideation. Utilize AI to improve productivity, accelerate workflows, and transform ideas into practical solutions.',
+          btn: true,
+        },
+        {
+          logo: './main/logo4.png',
+          title: 'REQUIREMENT ELICITATION',
+          tags: ['Interview', 'Stakeholder Analysis'],
+          desc: 'Experienced in working with stakeholders to gather, analyze, clarify, and validate business requirements. Skilled at identifying user needs and translating them into functional requirements that support system development.',
+          btn: false,
+        },
+        {
+          logo: './main/logo5.png',
+          title: 'DOCUMENTATION SKILLS',
+          tags: ['BRD', 'SRS', 'User Story', 'Acceptance Criteria'],
+          desc: 'Skilled in creating BRD, SRS, User Story, and Acceptance Criteria to standardize business requirements and facilitate effective communication between stakeholders and development teams.',
+          btn: false,
+        },
+        {
+          logo: './main/logo6.png',
+          title: 'AGILE / SCRUM',
+          tags: ['Agile', 'Scrum', 'Sprint', 'User Story'],
+          desc: 'Experienced in Agile/Scrum environments, participating in User Story development, Sprint activities, and cross-functional collaboration to ensure effective communication and successful project delivery.',
+          btn: false,
+        },
+      ],
+    },
+    projects: {
+      label: '03 — Project',
+      headingGold: 'My',
+      heading: 'Project',
+      showMore: 'Show More',
+      items: [
+        {
+          img: './main/ai.jpg',
+          id: 'TravelAI',
+          title: 'TravelAI – Agentic AI Travel Planning Chatbot',
+          desc: 'Agentic AI chatbot leveraging Multi-Agent architecture and RAG to generate personalized travel plans based on user preferences, budget, and schedule.',
+        },
+        {
+          img: './main/yen.jpg',
+          id: 'Yến Sào Nam An ERP System',
+          title: "Nam An Bird's Nest ERP – Production Module",
+          desc: "Nam An Bird's Nest ERP System is an enterprise solution developed to manage sales, inventory, and warehouse operations across multiple departments, with focus on the production module.",
+        },
+        {
+          img: './main/go.jpg',
+          id: 'Wonder Wood Manufacturing Management System',
+          title: 'Wonder Wood ERP – Human Resources & Finance Module',
+          desc: 'Wonder Wood Manufacturing Management System is designed to support production planning, material management, and manufacturing operations, with dedicated HR and Finance modules.',
+        },
+        {
+          img: './main/tauhu.jpg',
+          id: 'Yummy Food Ordering & Management System',
+          title: 'Yummy Food ERP – Sales Module',
+          desc: 'Yummy Food Ordering & Management System is a platform developed to streamline food ordering, payment processing, and order management processes for restaurant operations.',
+        },
+        {
+          img: './main/theshea.jpg',
+          id: 'Fashion Inventory Management System (Mobile App) – The SHEA',
+          title: 'The SHEA Fashion Inventory Management System (Mobile App)',
+          desc: 'The SHEA is a mobile application designed to support inventory tracking and stock management for fashion products, improving warehouse accuracy and shelf management efficiency.',
+        },
+      ],
+    },
+    contact: {
+      label: '04 — Contact',
+      headingGold: "Let's",
+      heading: 'Connect',
+    },
+    footer: '© 2026 Nguyễn Thị Trang Nhã · Business Analyst Portfolio',
+    project: { back: 'Back' },
+  },
+  VI: {
+    nav: { home: 'TRANG CHỦ', about: 'GIỚI THIỆU', skills: 'KỸ NĂNG', projects: 'DỰ ÁN', contact: 'LIÊN HỆ' },
+    hero: {
+      eyebrow: 'Business Analyst',
+      name1: 'Nguyễn Thị',
+      name2: 'Trang Nhã',
+      bio: 'Tôi là Business Analyst có kinh nghiệm thực tế trong thu thập yêu cầu, mô hình hóa quy trình nghiệp vụ bằng BPMN/UML và thiết kế wireframe. Tôi yêu thích việc phân tích nghiệp vụ và xây dựng các giải pháp đáp ứng nhu cầu thực tế của doanh nghiệp.',
+      downloadCV: 'Tải CV',
+      aboutMe: 'Giới Thiệu',
+      badge1: 'Sẵn sàng làm việc',
+      badge2: 'IELTS 6.5 - HSK3',
+    },
+    about: {
+      label: '01 — Giới Thiệu',
+      heading: 'Giới Thiệu',
+      headingGold: 'Bản Thân',
+      p1Pre: 'Tôi là một người ', p1Bold: 'chủ động, có trách nhiệm và tự thúc đẩy bản thân', p1Post: ', luôn sẵn sàng học hỏi và thích nghi với kiến thức, lĩnh vực và môi trường làm việc mới.',
+      p2Pre: 'Với niềm đam mê mạnh mẽ đối với ', p2Bold: 'phân tích nghiệp vụ và giải quyết vấn đề', p2Post: ', tôi liên tục nâng cao kỹ năng thông qua teamwork, giao tiếp hiệu quả và cộng tác với các bên liên quan để tạo ra giải pháp thực tiễn.',
+      p3Pre: 'Là một chuyên gia ', p3Bold: 'định hướng phát triển', p3Post: ', tôi hướng đến vị trí Middle-Level Business Analyst trong 1–2 năm tới bằng cách củng cố chuyên môn phân tích nghiệp vụ, tư duy hệ thống và kỹ năng thiết kế giải pháp.',
+      domainsTitle: 'Lĩnh Vực',
+      domains: [
+        'TRÍ TUỆ NHÂN TẠO (AI)',
+        'SẢN XUẤT',
+        'NHÂN SỰ',
+        'TÀI CHÍNH & KẾ TOÁN',
+        'NHÀ HÀNG & ĂN UỐNG (F&B)',
+      ],
+    },
+    skills: {
+      label: '02 — Kỹ Năng',
+      headingGold: 'Kỹ Năng',
+      heading: 'Nổi Bật',
+      viewDetails: 'Xem Chi Tiết',
+      cards: [
+        {
+          logo: './main/logo1.png',
+          title: 'THIẾT KẾ HỆ THỐNG',
+          tags: ['BPMN', 'User Story', 'Use Case', 'Activity Diagram', 'Sequence Diagram', 'ERD', 'DFD'],
+          desc: 'Có kinh nghiệm tạo biểu đồ BPMN, User Story, Use Case, Activity Diagram, Sequence Diagram, DFD và ERD để phân tích yêu cầu và mô hình hóa quy trình nghiệp vụ. Có khả năng chuyển đổi yêu cầu nghiệp vụ thành mô hình có cấu trúc và giải pháp hệ thống hiệu quả.',
+          btn: true,
+        },
+        {
+          logo: './main/logo2.png',
+          title: 'THIẾT KẾ UX/UI',
+          tags: ['Figma'],
+          desc: 'Có kinh nghiệm sử dụng Figma để tạo wireframe, prototype và giao diện người dùng. Thành thạo chuyển đổi yêu cầu nghiệp vụ thành giải pháp UI/UX trực quan giúp nâng cao khả năng sử dụng và cải thiện trải nghiệm người dùng.',
+          btn: true,
+        },
+        {
+          logo: './main/logo3.svg',
+          title: 'VIBE CODING',
+          tags: ['Claude', 'Gemini', 'ChatGPT'],
+          desc: 'Thành thạo sử dụng các công cụ AI như Claude, Gemini và ChatGPT để hỗ trợ phân tích nghiệp vụ, tạo prototype nhanh và ý tưởng giải pháp. Sử dụng AI để cải thiện năng suất và tăng tốc quy trình làm việc.',
+          btn: true,
+        },
+        {
+          logo: './main/logo4.png',
+          title: 'THU THẬP YÊU CẦU',
+          tags: ['Interview', 'Stakeholder Analysis'],
+          desc: 'Có kinh nghiệm làm việc với các bên liên quan để thu thập, phân tích, làm rõ và xác thực yêu cầu nghiệp vụ. Thành thạo xác định nhu cầu người dùng và chuyển đổi thành yêu cầu chức năng hỗ trợ phát triển hệ thống.',
+          btn: false,
+        },
+        {
+          logo: './main/logo5.png',
+          title: 'KỸ NĂNG TÀI LIỆU',
+          tags: ['BRD', 'SRS', 'User Story', 'Acceptance Criteria'],
+          desc: 'Thành thạo tạo BRD, SRS, User Story và Acceptance Criteria để chuẩn hóa yêu cầu nghiệp vụ và tạo điều kiện giao tiếp hiệu quả giữa các bên liên quan và đội phát triển.',
+          btn: false,
+        },
+        {
+          logo: './main/logo6.png',
+          title: 'AGILE / SCRUM',
+          tags: ['Agile', 'Scrum', 'Sprint', 'User Story'],
+          desc: 'Có kinh nghiệm trong môi trường Agile/Scrum, tham gia phát triển User Story, hoạt động Sprint và cộng tác đa chức năng để đảm bảo giao tiếp hiệu quả và bàn giao dự án thành công.',
+          btn: false,
+        },
+      ],
+    },
+    projects: {
+      label: '03 — Dự Án',
+      headingGold: 'Dự Án',
+      heading: 'Của Tôi',
+      showMore: 'Xem Chi Tiết',
+      items: [
+        {
+          img: './main/ai.jpg',
+          id: 'TravelAI',
+          title: 'TravelAI – Chatbot AI Lập Kế Hoạch Du Lịch',
+          desc: 'Chatbot AI đa tác nhân tạo kế hoạch du lịch cá nhân hóa theo sở thích, ngân sách và lịch trình người dùng.',
+        },
+        {
+          img: './main/yen.jpg',
+          id: 'Yến Sào Nam An ERP System',
+          title: 'ERP Yến Sào Nam An – Module Sản Xuất',
+          desc: 'Module ERP hỗ trợ quản lý nguyên vật liệu, lập kế hoạch sản xuất và quy trình sản xuất.',
+        },
+        {
+          img: './main/go.jpg',
+          id: 'Wonder Wood Manufacturing Management System',
+          title: 'Wonder Wood ERP – Module Nhân Sự & Tài Chính',
+          desc: 'Module ERP quản lý nhân viên, chấm công, lương và vận hành tài chính trong công ty sản xuất nội thất.',
+        },
+        {
+          img: './main/tauhu.jpg',
+          id: 'Yummy Food Ordering & Management System',
+          title: 'Yummy Food ERP – Module Bán Hàng',
+          desc: 'Module ERP quản lý bán hàng, đơn hàng và thanh toán, tối ưu vận hành nhà hàng.',
+        },
+        {
+          img: './main/theshea.jpg',
+          id: 'Fashion Inventory Management System (Mobile App) – The SHEA',
+          title: 'The SHEA – Quản Lý Hàng Tồn Kho Thời Trang (Mobile App)',
+          desc: 'Ứng dụng di động hỗ trợ đánh dấu hàng tồn, quản lý kệ và luân chuyển hàng hóa.',
+        },
+      ],
+    },
+    contact: {
+      label: '04 — Liên Hệ',
+      headingGold: 'Thông Tin',
+      heading: 'Liên Hệ',
+    },
+    footer: '© 2026 Nguyễn Thị Trang Nhã · Portfolio Business Analyst',
+    project: { back: 'Quay Lại' },
+  },
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECT DOCUMENT DATA
+═══════════════════════════════════════════════════════════════ */
+
+/* ── TravelAI ── */
+const TRAVELAI_TABS_DATA = {
+  'WORKFLOW': {
+    layoutType: 'flat',
+    sections: [{ title: '', images: ['./ai/workflow.jpg'] }],
+  },
+  'USE CASE': {
+    sections: [
+      { title: 'OVERALL USE CASE DIAGRAM', isCentered: true,  images: ['./ai/usecase1.jpg'] },
+      { title: 'LEVEL 1 USE CASE DIAGRAM', isCentered: false, images: ['./ai/usecase2.jpg', './ai/usecase3.jpg', './ai/usecase4.jpg'] },
+      { title: 'LEVEL 2 USE CASE DIAGRAM', isCentered: false, images: ['./ai/usecase5.jpg', './ai/usecase6.jpg'] },
+    ],
+  },
+  'UC SPEC':  { layoutType: 'grid', sections: [{ title: '', images: ['./ai/ucspe.jpg', './ai/ucspe2.jpg'] }] },
+  'SEQUENCE DIAGRAM': { sections: [{ title: '', isCentered: false, images: ['./ai/se1.jpg', './ai/se2.jpg', './ai/se3.jpg', './ai/se4.jpg'] }] },
+  'ERD': { layoutType: 'flat', sections: [{ title: '', images: ['./ai/erd.png'] }] },
+  'FIGMA': {
+    layoutType: 'figma_layered',
+    sections: [
+      { title: 'UX DESIGN', hasButtons: true,  images: ['./ai/fig1.jpg'] },
+      { title: 'UI DESIGN', hasButtons: false, images: ['./ai/fig2.jpg', './ai/fig3.jpg', './ai/fig4.jpg', './ai/fig5.jpg', './ai/fig6.jpg', './ai/fig7.jpg'] },
+    ],
+  },
+};
+
+/* ── Yến Sào Nam An ERP System ── */
+const YEN_SAO_TABS_DATA = {
+  'WORKFLOW': {
+    layoutType: 'flat',
+    sections: [
+      { title: 'PRODUCTION MODULE', images: ['./yen/workflow1.jpg'] },
+      { title: 'SALES MODULE',      images: ['./yen/workflow2.jpg'] },
+      { title: 'HR MODULE',         images: ['./yen/workflow3.jpg'] },
+      { title: 'FINANCE MODULE',    images: ['./yen/workflow4.jpg'] },
+    ],
+  },
+  'USE CASE': {
+    sections: [
+      { title: 'OVERALL USE CASE DIAGRAM', isCentered: true,  images: ['./yen/usecaseoverall.jpg'] },
+      { title: 'LEVEL 1 USE CASE DIAGRAM', isCentered: false, images: ['./yen/usecaselevel1_1.jpg', './yen/usecaselevel1_2.jpg', './yen/usecaselevel1_3.jpg', './yen/usecaselevel1_4.jpg', './yen/usecaselevel1_5.jpg', './yen/usecaselevel1_6.jpg'] },
+      { title: 'LEVEL 2 USE CASE DIAGRAM', isCentered: false, images: ['./yen/usecaselevel2_1.jpg', './yen/usecaselevel2_2.jpg', './yen/usecaselevel2_3.jpg', './yen/usecaselevel2_4.jpg', './yen/usecaselevel2_5.jpg', './yen/usecaselevel2_6.jpg', './yen/usecaselevel2_7.jpg', './yen/usecaselevel2_8.jpg', './yen/usecaselevel2_9.jpg', './yen/usecaselevel2_10.jpg', './yen/usecaselevel2_11.jpg'] },
+    ],
+  },
+  'UC SPEC': { layoutType: 'grid', sections: [{ title: '', images: ['./yen/ucspe1.jpg', './yen/ucspe2.jpg'] }] },
+  'SEQUENCE DIAGRAM': { sections: [{ title: '', isCentered: false, images: ['./yen/se1.jpg', './yen/se2.jpg', './yen/se3.jpg', './yen/se4.jpg'] }] },
+  'FIGMA': {
+    layoutType: 'figma_layered',
+    sections: [
+      { title: 'UX DESIGN', hasButtons: true, prototypeUrl: 'https://www.figma.com/proto/Y2nAk1SYMp8wBJxhH6JimP/-Nam-An---Figma---S%E1%BA%A3n-xu%E1%BA%A9t-?node-id=2281-80834&p=f&scaling=scale-down&content-scaling=fixed&starting-point-node-id=2281%3A80834&show-proto-sidebar=1&page-id=0%3A1', images: ['./yen/fig1.jpg'] },
+      { title: 'UI DESIGN', hasButtons: false, images: ['./yen/fig2.jpg', './yen/fig3.jpg', './yen/fig4.jpg', './yen/fig5.jpg', './yen/fig6.jpg', './yen/fig7.jpg', './yen/fig8.jpg', './yen/fig9.jpg'] },
+    ],
+  },
+};
+
+/* ── Wonder Wood Manufacturing Management System ── */
+const WONDER_WOOD_TABS_DATA = {
+  'WORKFLOW': {
+    layoutType: 'flat',
+    sections: [
+      { title: 'PRODUCTION MODULE', images: ['./go/workflow1.jpg'] },
+      { title: 'SALES MODULE',      images: ['./go/workflow2.jpg'] },
+      { title: 'HR MODULE',         images: ['./go/workflow3.jpg'] },
+      { title: 'FINANCE MODULE',    images: ['./go/workflow4.jpg'] },
+    ],
+  },
+  'USE CASE': {
+    sections: [
+      { title: 'OVERALL USE CASE DIAGRAM', isCentered: true,  images: ['./go/usecaseoverall.jpg'] },
+      { title: 'LEVEL 1 USE CASE DIAGRAM', isCentered: false, images: ['./go/usecaselevel1_1.jpg', './go/usecaselevel1_2.jpg', './go/usecaselevel1_3.jpg', './go/usecaselevel1_4.jpg'] },
+      { title: 'LEVEL 2 USE CASE DIAGRAM', isCentered: false, images: ['./go/usecaselevel2_1.jpg', './go/usecaselevel2_2.jpg', './go/usecaselevel2_3.jpg', './go/usecaselevel2_4.jpg'] },
+    ],
+  },
+  'UC SPEC': { layoutType: 'grid', sections: [{ title: '', images: ['./go/ucspe1.jpg', './go/ucspe2.jpg'] }] },
+  'DFD': {
+    layoutType: 'flat',
+    sections: [
+      { title: 'DFD NGỮ CẢNH',  images: ['./go/dfdngucanh.jpg'] },
+      { title: 'DFD TỔNG QUÁT', images: ['./go/dfdtongquat.jpg'] },
+    ],
+  },
+  'FIGMA': {
+    layoutType: 'figma_layered',
+    sections: [
+      { title: 'UX DESIGN', hasButtons: true, prototypeUrl: 'https://www.figma.com/proto/2HehjZbfGb7sVbxCL5WLJI/-WonderWood---H%E1%BB%87-Th%E1%BB%91ng-ERP-?node-id=2162-80395&page-id=828%3A25683&starting-point-node-id=2162%3A80395&scaling=scale-down&content-scaling=fixed&show-proto-sidebar=1', images: ['./go/fig1.jpg'] },
+      { title: 'UI DESIGN', hasButtons: false, images: ['./go/fig2.jpg', './go/fig3.jpg', './go/fig4.jpg', './go/fig5.jpg', './go/fig6.jpg', './go/fig7.jpg', './go/fig8.jpg', './go/fig9.jpg'] },
+    ],
+  },
+};
+
+/* ── Yummy Food Ordering & Management System ── */
+const YUMMY_FOOD_TABS_DATA = {
+  'WORKFLOW': {
+    layoutType: 'flat',
+    sections: [
+      { title: 'PRODUCTION MODULE', images: ['./tauhu/workflow1.jpg'] },
+      { title: 'SALES MODULE',      images: ['./tauhu/workflow2.jpg'] },
+      { title: 'HR MODULE',         images: ['./tauhu/workflow3.jpg'] },
+      { title: 'FINANCE MODULE',    images: ['./tauhu/workflow4.jpg'] },
+    ],
+  },
+  'USE CASE': {
+    sections: [
+      { title: 'OVERALL USE CASE DIAGRAM', isCentered: true,  images: ['./tauhu/usecaseoverall.jpg'] },
+      { title: 'LEVEL 1 USE CASE DIAGRAM', isCentered: false, images: ['./tauhu/usecaselevel1_1.jpg', './tauhu/usecaselevel1_2.jpg', './tauhu/usecaselevel1_3.jpg', './tauhu/usecaselevel1_4.jpg'] },
+      { title: 'LEVEL 2 USE CASE DIAGRAM', isCentered: false, images: ['./tauhu/usecaselevel2_1.jpg', './tauhu/usecaselevel2_2.jpg', './tauhu/usecaselevel2_3.jpg', './tauhu/usecaselevel2_4.jpg', './tauhu/usecaselevel2_5.jpg', './tauhu/usecaselevel2_6.jpg'] },
+    ],
+  },
+  'UC SPEC': { layoutType: 'grid', sections: [{ title: '', images: ['./tauhu/ucspe1.jpg', './tauhu/ucspe2.jpg'] }] },
+  'ACTIVITY DIAGRAM': { layoutType: 'flat', sections: [{ title: '', images: ['./tauhu/ad.jpg'] }] },
+  'ERD': {
+    layoutType: 'flat',
+    sections: [
+      { title: 'ENTITY RELATIONSHIP DIAGRAM 1', images: ['./tauhu/erd1.jpg'] },
+      { title: 'ENTITY RELATIONSHIP DIAGRAM 2', images: ['./tauhu/erd2.jpg'] },
+    ],
+  },
+  'FIGMA': {
+    layoutType: 'figma_layered',
+    sections: [
+      { title: 'UX DESIGN', hasButtons: true, prototypeUrl: 'https://www.figma.com/proto/NRuushQ45tYzRi72LHbkEo/Yummy?node-id=862-86379&p=f&scaling=scale-down&content-scaling=fixed&starting-point-node-id=862%3A86379&show-proto-sidebar=1&page-id=0%3A1', images: ['./tauhu/fig1.jpg'] },
+      { title: 'UI DESIGN', hasButtons: false, images: ['./tauhu/fig2.jpg', './tauhu/fig3.jpg', './tauhu/fig4.jpg', './tauhu/fig5.jpg', './tauhu/fig6.jpg', './tauhu/fig7.jpg', './tauhu/fig8.jpg', './tauhu/fig9.jpg'] },
+    ],
+  },
+};
+
+/* ── Fashion Inventory Management System – The SHEA ── */
+const THE_SHEA_TABS_DATA = {
+  'WORKFLOW': {
+    layoutType: 'grid',
+    sections: [{ title: '', images: ['./theshea/workflow1.jpg', './theshea/workflow2.jpg', './theshea/workflow3.jpg', './theshea/workflow4.jpg'] }],
+  },
+  'USE CASE': {
+    sections: [
+      { title: 'OVERALL USE CASE DIAGRAM', isMobileSize: true, images: ['./theshea/usecaseoverall.jpg'] },
+      { title: 'LEVEL 1 USE CASE DIAGRAM', isCentered: false, images: ['./theshea/usecaselevel1_1.jpg', './theshea/usecaselevel1_2.jpg', './theshea/usecaselevel1_3.jpg'] },
+      { title: 'LEVEL 2 USE CASE DIAGRAM', isCentered: false, images: ['./theshea/usecaselevel2_1.jpg', './theshea/usecaselevel2_2.jpg'] },
+    ],
+  },
+  'UC SPEC':          { layoutType: 'grid', sections: [{ title: '', images: ['./theshea/ucspe1.jpg', './theshea/ucspe2.jpg'] }] },
+  'ACTIVITY DIAGRAM': { layoutType: 'grid', sections: [{ title: '', images: ['./theshea/ad1.jpg', './theshea/ad2.jpg', './theshea/ad3.jpg', './theshea/ad4.jpg'] }] },
+  'FIGMA': {
+    layoutType: 'mobile_figma_layered',
+    sections: [
+      { title: 'UX DESIGN', hasButtons: true, prototypeUrl: 'https://www.figma.com/proto/EtJMocKYSkWViNfSWIFuN0/-TrangNha---ViTriSanPham--Figma_2025-02-26?node-id=1-675&page-id=0%3A1&starting-point-node-id=1%3A675&show-proto-sidebar=1', images: ['./theshea/fig1.jpg'] },
+      { title: 'UI DESIGN', hasButtons: false, images: ['./theshea/fig2.jpg', './theshea/fig3.jpg', './theshea/fig4.jpg', './theshea/fig5.jpg', './theshea/fig6.jpg', './theshea/fig7.jpg'] },
+    ],
+  },
+};
+
+const PROJECT_META = {
+  'TravelAI': {
+    breadcrumb: 'Portfolio  /  Projects  /  TravelAI – Agentic AI Travel Planning Chatbot',
+    title:      'TravelAI – Agentic AI Travel Planning Chatbot',
+    desc:       'TravelAI is an Agentic AI travel planning chatbot designed to help users create personalized travel itineraries based on their preferences, budget, and schedule. The system leverages a Multi-Agent architecture combined with Retrieval-Augmented Generation (RAG) to collect, analyze, and synthesize information from multiple sources. As a Business Analyst, I was responsible for requirement elicitation, business process modeling, use case analysis, user story development, and solution design to ensure the system meets user needs effectively.',
+    defaultTab: 'WORKFLOW',
+    tabsData:   TRAVELAI_TABS_DATA,
+  },
+  'Yến Sào Nam An ERP System': {
+    breadcrumb: "Portfolio  /  Projects  /  Nam An Bird's Nest ERP – Production Module",
+    title:      "Nam An Bird's Nest ERP – Production Module",
+    desc:       "Nam An Bird's Nest ERP System is an enterprise solution developed to manage sales, inventory, and warehouse operations across multiple departments, with focus on the production module.",
+    defaultTab: 'WORKFLOW',
+    tabsData:   YEN_SAO_TABS_DATA,
+  },
+  'Wonder Wood Manufacturing Management System': {
+    breadcrumb: 'Portfolio  /  Projects  /  Wonder Wood ERP – Human Resources & Finance Module',
+    title:      'Wonder Wood ERP – Human Resources & Finance Module',
+    desc:       'Wonder Wood Manufacturing Management System is designed to support production planning, material management, and manufacturing operations, with dedicated HR and Finance modules.',
+    defaultTab: 'WORKFLOW',
+    tabsData:   WONDER_WOOD_TABS_DATA,
+  },
+  'Yummy Food Ordering & Management System': {
+    breadcrumb: 'Portfolio  /  Projects  /  Yummy Food ERP – Sales Module',
+    title:      'Yummy Food ERP – Sales Module',
+    desc:       'Yummy Food Ordering & Management System is a platform developed to streamline food ordering, payment processing, and order management processes for restaurant operations.',
+    defaultTab: 'WORKFLOW',
+    tabsData:   YUMMY_FOOD_TABS_DATA,
+  },
+  'Fashion Inventory Management System (Mobile App) – The SHEA': {
+    breadcrumb: 'Portfolio  /  Projects  /  The SHEA Fashion Inventory Management System (Mobile App)',
+    title:      'The SHEA Fashion Inventory Management System (Mobile App)',
+    desc:       'The SHEA is a mobile application designed to support inventory tracking and stock management for fashion products, improving warehouse accuracy and shelf management efficiency.',
+    defaultTab: 'WORKFLOW',
+    tabsData:   THE_SHEA_TABS_DATA,
+  },
+};
+
+const PROJECT_META_VI = {
+  'TravelAI': {
+    breadcrumb: 'Danh mục  /  Kinh nghiệm  /  TravelAI – Hệ thống Chatbot Agentic AI Lập Kế Hoạch Du Lịch',
+    title:      'TravelAI – Agentic AI Chatbot Lập Kế Hoạch Du Lịch',
+    desc: 'TravelAI là một Agentic AI travel planning chatbot được thiết kế để giúp người dùng tạo lịch trình du lịch cá nhân hóa dựa trên sở thích, ngân sách và lịch trình. Hệ thống tận dụng kiến trúc Multi-Agent kết hợp với Retrieval-Augmented Generation (RAG) để thu thập, phân tích và tổng hợp thông tin từ nhiều nguồn. Với vai trò là Business Analyst, tôi chịu trách nhiệm về requirement elicitation, business process modeling, use case analysis, user story development và solution design để đảm bảo hệ thống đáp ứng hiệu quả nhu cầu của người dùng.',
+  },
+  'Yến Sào Nam An ERP System': {
+    breadcrumb: 'Danh mục  /  Kinh nghiệm  /  Hệ thống ERP Yến Sào Nam An',
+    desc: 'Hệ thống ERP Yến Sào Nam An là một giải pháp doanh nghiệp toàn diện được phát triển để tối ưu hóa quy trình vận hành đa phòng ban. Với vai trò là Business Analyst, tôi đã dẫn dắt quá trình thu thập và phân tích yêu cầu, thực hiện business process modeling, use case analysis và thiết kế wireframe, prototype tương tác cao trên Figma cho các module quản lý sản xuất, quản lý kho bãi và quản lý đơn hàng.',
+  },
+  'Wonder Wood Manufacturing Management System': {
+    breadcrumb: 'Danh mục  /  Kinh nghiệm  /  Hệ thống Quản lý Sản xuất Wonder Wood',
+    desc: 'Hệ thống quản lý sản xuất ERP Wonder Wood hỗ trợ doanh nghiệp số hóa toàn diện quy trình vận hành nhà máy nội thất. Với vai trò là Business Analyst, tôi chịu trách nhiệm thu thập yêu cầu từ các bên liên quan, xây dựng tài liệu đặc tả, thực hiện business process modeling, use case analysis cho các phân hệ Human Resources và Finance Module, đồng thời thiết kế giao diện UI/UX trên Figma nhằm đảm bảo tính khả thi và đồng bộ của giải pháp.',
+  },
+  'Yummy Food Ordering & Management System': {
+    breadcrumb: 'Danh mục  /  Kinh nghiệm  /  Hệ thống Gọi món & Quản lý Yummy Food',
+    desc: 'Hệ thống ERP Yummy Food tập trung giải quyết bài toán tối ưu hóa quy trình gọi món và quản lý vận hành tại điểm bán (POS). Với vai trò là Business Analyst, tôi đã chuyển đổi các yêu cầu nghiệp vụ thành đặc tả chức năng hệ thống, thực hiện use case analysis, user story development cho Sales Module, thiết kế cấu trúc wireframe trực quan và phối hợp chặt chẽ với đội ngũ phát triển để đảm bảo tính chuẩn xác của logic tính năng.',
+  },
+  'Fashion Inventory Management System (Mobile App) – The SHEA': {
+    breadcrumb: 'Danh mục  /  Kinh nghiệm  /  Hệ thống Quản lý Tồn kho Thời trang The SHEA (Mobile App)',
+    desc: 'Ứng dụng di động Quản lý Tồn kho Thời trang The SHEA giúp kiểm soát hàng hóa và luân chuyển tồn kho chính xác theo thời gian thực. Với vai trò là Thực tập sinh Business Analyst, tôi đã tham gia dự án theo mô hình Agile/Scrum, chịu trách nhiệm thu thập yêu cầu người dùng, thực hiện use case analysis, viết user story kèm tiêu chí nghiệm thu (acceptance criteria) rõ ràng cho tính năng quản lý vị trí kệ hàng, hỗ trợ tối ưu hóa quy trình vận hành kho bãi.',
+  },
+};
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECT DETAIL VIEW
+═══════════════════════════════════════════════════════════════ */
+function ProjectDetailView({ project, onBack, language }) {
+  const T        = TRANSLATIONS[language];
+  const metaBase = PROJECT_META[project]    || PROJECT_META['TravelAI'];
+  const metaVI   = PROJECT_META_VI[project] || PROJECT_META_VI['TravelAI'];
+  const meta     = language === 'VI'
+    ? { ...metaBase, breadcrumb: metaVI.breadcrumb, desc: metaVI.desc }
+    : metaBase;
+  const tabsData = meta.tabsData;
+
+  const tabKeys  = Object.keys(tabsData);
+
+  const [activeSubTab, setActiveSubTab] = useState(tabKeys[0]);
+
+  /* Stable anchor id per tab */
+  const sectionId = (tabName) =>
+    (project + '-' + tabName).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  /* IntersectionObserver — light active tab based on scroll position */
+  useEffect(() => {
+    const observers = [];
+    tabKeys.forEach(tabName => {
+      const el = document.getElementById(sectionId(tabName));
+      if (!el) return;
+      const obs = new IntersectionObserver(
+        ([entry]) => { if (entry.isIntersecting) setActiveSubTab(tabName); },
+        { rootMargin: '-10% 0px -60% 0px', threshold: 0 }
+      );
+      obs.observe(el);
+      observers.push(obs);
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, [project]);
+
+  const scrollToSection = (tabName) =>
+    document.getElementById(sectionId(tabName))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  /* ── Image card ── */
+  const ImgCard = ({ src, flat = false }) => (
+    <div className="w-full bg-white p-4 md:p-6 shadow-sm border border-gray-100 rounded-xl flex justify-center">
+      <img src={src} alt="" className={flat ? 'doc-img-flat' : 'doc-img'}
+        onError={e => { e.target.closest('div').style.display = 'none'; }} />
+    </div>
+  );
+
+  /* ── Section renderer (unchanged logic) ── */
+  const renderSection = (section, idx, layoutType) => {
+    const hasTitle = section.title && section.title.trim() !== '';
+
+    if (layoutType === 'flat') return (
+      <div key={idx} className="mb-12">
+        {hasTitle && <SectionTitle title={section.title} />}
+        <ImgCard src={section.images[0]} flat />
+      </div>
+    );
+
+    if (layoutType === 'grid') return (
+      <div key={idx} className="mb-12">
+        {hasTitle && <SectionTitle title={section.title} />}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+          {section.images.map((path, j) => <ImgCard key={j} src={path} />)}
+        </div>
+      </div>
+    );
+
+    if (layoutType === 'figma_layered') return (
+      <div key={idx} className="mb-12">
+        <SectionTitle title={section.title} />
+        {section.hasButtons ? (
+          <>
+            <div className="w-full max-w-5xl mx-auto bg-white p-4 md:p-6 shadow-sm border border-gray-100 rounded-xl flex justify-center">
+              <img src={section.images[0]} alt="UX Design" className="doc-img"
+                onError={e => { e.target.closest('div').style.display = 'none'; }} />
+            </div>
+            <div className="flex justify-center items-center gap-4 mt-6">
+              {section.prototypeUrl ? (
+                <a href={section.prototypeUrl} target="_blank" rel="noopener noreferrer"
+                  className="bg-figmaGold text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-sans font-medium text-sm hover:brightness-110 transition-all">
+                  <IcoExternalLink size={15} /> Prototype
+                </a>
+              ) : (
+                <button className="bg-figmaGold text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-sans font-medium text-sm hover:brightness-110 transition-all">
+                  <IcoExternalLink size={15} /> Prototype
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+            {section.images.map((path, j) => <ImgCard key={j} src={path} />)}
+          </div>
+        )}
+      </div>
+    );
+
+    if (layoutType === 'mobile_figma_layered') return (
+      <div key={idx} className="mb-12">
+        <SectionTitle title={section.title} />
+        {section.hasButtons ? (
+          <>
+            <div className="w-full max-w-md mx-auto bg-white p-4 md:p-6 shadow-sm border border-gray-100 rounded-xl flex justify-center">
+              <img src={section.images[0]} alt="UX Design" className="doc-img"
+                onError={e => { e.target.closest('div').style.display = 'none'; }} />
+            </div>
+            <div className="flex justify-center items-center gap-4 mt-6">
+              {section.prototypeUrl ? (
+                <a href={section.prototypeUrl} target="_blank" rel="noopener noreferrer"
+                  className="bg-figmaGold text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-sans font-medium text-sm hover:brightness-110 transition-all">
+                  <IcoExternalLink size={15} /> Prototype
+                </a>
+              ) : (
+                <button className="bg-figmaGold text-white px-6 py-2.5 rounded-lg flex items-center gap-2 font-sans font-medium text-sm hover:brightness-110 transition-all">
+                  <IcoExternalLink size={15} /> Prototype
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full">
+            {section.images.map((path, j) => <ImgCard key={j} src={path} />)}
+          </div>
+        )}
+      </div>
+    );
+
+    /* Default – USE CASE */
+    return (
+      <div key={idx} className="mb-12">
+        {hasTitle && <SectionTitle title={section.title} />}
+        {section.isMobileSize ? (
+          <div className="w-full max-w-md mx-auto bg-white p-6 shadow-sm border border-gray-100 rounded-xl flex justify-center">
+            <img src={section.images[0]} alt="" className="doc-img"
+              onError={e => { e.target.closest('div').style.display = 'none'; }} />
+          </div>
+        ) : section.isCentered ? (
+          <div className="w-full max-w-5xl mx-auto bg-white p-4 md:p-6 shadow-sm border border-gray-100 rounded-xl flex justify-center">
+            <img src={section.images[0]} alt="" className="doc-img"
+              onError={e => { e.target.closest('div').style.display = 'none'; }} />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 w-full">
+            {section.images.map((path, j) => <ImgCard key={j} src={path} />)}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-figmaLightBg flex flex-col">
+
+      {/* ── Sticky top bar ── */}
+      <div className="sticky top-0 z-50 bg-white border-b border-gray-100"
+        style={{ boxShadow: '0 1px 12px rgba(26,43,73,0.08)' }}>
+        <div className="max-w-7xl mx-auto px-8 h-[60px] flex items-center justify-between gap-6">
+          <button onClick={onBack}
+            className="inline-flex items-center gap-2 bg-white text-figmaDark text-[13px] font-semibold px-4 py-[7px] rounded border border-gray-200 hover:bg-gray-50 transition-all select-none">
+            <IcoBack size={14} /> {T.project.back}
+          </button>
+          <div className="flex items-center gap-5 text-[12.5px] text-gray-500">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nhanguyen192004@gmail.com"
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-[6px] text-gray-500 hover:text-figmaGold transition-colors no-underline">
+              <IcoMail size={13} className="text-figmaGold flex-shrink-0" />
+              nhanguyen192004@gmail.com
+            </a>
+            <span className="w-px h-3.5 bg-gray-300" />
+            <span className="flex items-center gap-[6px]">
+              <IcoPhone size={13} className="text-figmaGold flex-shrink-0" />
+              0373 141 060
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Project banner ── */}
+      <div className="bg-figmaDark px-8 py-12">
+        <div className="max-w-5xl mx-auto">
+          <p className="text-figmaGold text-[11px] font-semibold tracking-[0.14em] uppercase mb-4">{meta.breadcrumb}</p>
+          <h1 className="font-serif text-white font-bold mb-6" style={{ fontSize: '1.85rem', lineHeight: 1.25 }}>{language === 'VI' ? (metaVI.title || meta.title) : meta.title}</h1>
+          <div className="border-l-2 border-figmaGold pl-4 max-w-2xl">
+            <p className="text-gray-300 text-[14px] leading-[1.8]">
+              {language === 'VI' ? metaVI.desc : metaBase.desc}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Scoped sticky context: relative block = sticky chỉ ghim trong vùng nội dung này ── */}
+      <div className="relative w-full">
+
+        {/* ── Sticky sub-nav (scroll-anchor driven) ── */}
+        <div className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-md border-b border-gray-200/80">
+          <div className="max-w-5xl mx-auto px-8">
+            <div className="flex items-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+              {tabKeys.map(tabName => (
+                <button key={tabName} onClick={() => scrollToSection(tabName)}
+                  className={`px-5 py-[14px] text-[12.5px] tracking-[0.06em] whitespace-nowrap border-b-2 transition-all duration-150 font-sans ${
+                    activeSubTab === tabName
+                      ? 'text-figmaDark font-bold border-figmaDark'
+                      : 'text-figmaGold font-medium border-transparent hover:text-figmaDark hover:border-gray-200'
+                  }`}>
+                  {tabName}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* ── Long-scroll document content ── */}
+        <div className="py-10 px-4">
+          <div className="w-full mx-auto py-4" style={{ maxWidth: 'min(96%, 1420px)' }}>
+            {tabKeys.map(tabName => {
+              const tabData = tabsData[tabName];
+              return (
+                <div key={tabName} id={sectionId(tabName)} className="mb-16" style={{ scrollMarginTop: '115px' }}>
+                  {/* Tab section divider — centered */}
+                  <SectionDivider label={tabName} />
+                  {/* All sections in this tab rendered flat */}
+                  {tabData.sections.map((section, idx) => renderSection(section, idx, tabData.layoutType))}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HEADER
+═══════════════════════════════════════════════════════════════ */
+function Header({ language, setLanguage }) {
+  const [active, setActive] = useState('home');
+  const [shadow, setShadow] = useState(false);
+  const T = TRANSLATIONS[language];
+  const NAV_IDS = ['home', 'about', 'skills', 'projects', 'contact'];
+
+  useEffect(() => {
+    const obs = new IntersectionObserver(
+      entries => entries.forEach(e => { if (e.isIntersecting) setActive(e.target.id); }),
+      { rootMargin: '-72px 0px -58% 0px', threshold: 0 }
+    );
+    NAV_IDS.forEach(id => { const el = document.getElementById(id); if (el) obs.observe(el); });
+    const onScroll = () => setShadow(window.scrollY > 4);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => { obs.disconnect(); window.removeEventListener('scroll', onScroll); };
+  }, []);
+
+  return (
+    <header className={`fixed top-0 inset-x-0 z-50 bg-white transition-shadow duration-200 ${
+      shadow ? 'shadow-[0_2px_16px_rgba(26,43,73,0.10)]' : 'border-b border-gray-100'
+    }`}>
+      <div className="max-w-7xl mx-auto px-10 h-[72px] flex items-center justify-between">
+        <button onClick={() => goTo('home')}
+          className="font-serif text-[17px] font-bold text-figmaDark tracking-[0.22em] hover:text-figmaGold transition-colors select-none">
+          TRANG NHA
+        </button>
+        <nav className="hidden md:flex items-center gap-12">
+          {NAV_IDS.map(id => (
+            <button key={id} onClick={() => goTo(id)}
+              className={`text-[13px] tracking-[0.09em] transition-all pb-[2px] ${
+                active === id
+                  ? 'text-figmaDark font-semibold border-b border-figmaDark'
+                  : 'text-gray-400 font-medium hover:text-figmaDark'
+              }`}>
+              {T.nav[id]}
+            </button>
+          ))}
+        </nav>
+        <div className="flex items-center gap-1">
+          {['VI', 'EN'].map(lang => (
+            <button key={lang} onClick={() => setLanguage(lang)}
+              className={`text-[11px] font-bold px-3 py-[5px] rounded tracking-[0.12em] transition-all ${
+                language === lang
+                  ? 'bg-figmaDark text-white'
+                  : 'text-gray-400 hover:text-figmaDark'
+              }`}>
+              {lang}
+            </button>
+          ))}
+        </div>
+      </div>
+    </header>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   HOME SECTION — hero-clip diagonal + Polaroid with floating badges
+═══════════════════════════════════════════════════════════════ */
+function HomeSection({ language }) {
+  const T = TRANSLATIONS[language].hero;
+  return (
+    <section id="home" className="flex overflow-hidden bg-white" style={{ minHeight: '100vh', paddingTop: '72px' }}>
+
+      {/* Khối lề trái màu xanh sẫm */}
+      <div className="hero-clip bg-figmaDark flex-shrink-0 flex items-center"
+        style={{ width: '53%', minHeight: 'calc(100vh - 72px)' }}>
+        <div style={{ paddingLeft: '112px', paddingRight: '40px', maxWidth: '640px' }}>
+          {/* Tiêu đề phụ Business Analyst */}
+          <span className="text-figmaGold text-[13px] font-medium tracking-[0.12em] block mb-2">
+            — Business Analyst
+          </span>
+          <h1 className="font-serif font-bold leading-[1.08] mb-8" style={{ fontSize: 'clamp(2.8rem, 4.4vw, 4.2rem)' }}>
+            <span className="text-figmaGold block whitespace-nowrap">{T.name1}</span>
+            <span className="text-white block">{T.name2}</span>
+          </h1>
+          <div className="border-l-[3px] border-figmaGold/60 pl-4 mb-10">
+            <p className="text-gray-300 text-[14px] leading-[2] max-w-2xl">{T.bio}</p>
+          </div>
+          <div className="flex flex-wrap gap-4">
+            <a href={language === 'EN' ? './CV_EN.pdf' : './CV_VI.pdf'}
+              target="_blank" rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-figmaGold text-white text-[13px] font-semibold px-6 py-3 rounded hover:brightness-110 transition-all">
+              <IcoDownload size={15} /> {T.downloadCV}
+            </a>
+            <button onClick={() => goTo('about')}
+              className="inline-flex items-center gap-2 bg-white text-figmaDark text-[13px] font-semibold px-6 py-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-all">
+              {T.aboutMe} <IcoArrow size={15} />
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Khối lề phải — hộp container khóa cứng kích thước neo tọa độ */}
+      <div className="flex-1 bg-white flex items-center justify-center" style={{ minHeight: 'calc(100vh - 72px)' }}>
+        <div className="relative flex-shrink-0 select-none" style={{ width: '310px', height: '430px' }}>
+
+          {/* Khung ảnh Polaroid phẳng đứng, xoay nghiêng nhẹ 2 độ */}
+          <div className="photo-frame shadow-2xl absolute inset-0" style={{ transform: 'rotate(2deg)', padding: '10px 10px 44px 10px', background: '#ffffff', borderRadius: '4px' }}>
+            <img
+              src="./screenshots/ava1.png"
+              alt="Nguyễn Thị Trang Nhã"
+              style={{ width: '290px', height: '376px', objectFit: 'cover', display: 'block', borderRadius: '2px' }}
+            />
+          </div>
+
+          {/* Tag nổi góc trên bên trái — ghim đè mép trên bên trái */}
+          <div className="absolute z-20 flex items-center gap-[7px] bg-white rounded-full px-4 py-[7px] shadow-lg text-[12px] font-medium text-figmaDark whitespace-nowrap"
+            style={{ top: '-14px', left: '-20px' }}>
+            <span className="w-[7px] h-[7px] rounded-full bg-figmaDark flex-shrink-0" />
+            {T.badge1}
+          </div>
+
+          {/* Tag nổi góc dưới bên phải — ghim đè mép dưới bên phải */}
+          <div className="absolute z-20 flex items-center gap-[7px] bg-white rounded-full px-4 py-[7px] shadow-lg text-[12px] font-medium text-figmaDark whitespace-nowrap"
+            style={{ bottom: '-12px', right: '-24px' }}>
+            <span className="w-[7px] h-[7px] rounded-full bg-figmaDark flex-shrink-0" />
+            {T.badge2}
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ABOUT SECTION — Domains list (replaces personal info table)
+═══════════════════════════════════════════════════════════════ */
+function AboutSection({ language }) {
+  const T  = TRANSLATIONS[language];
+  const ta = T.about;
+  return (
+    <section id="about" className="bg-white py-24">
+      <div className="max-w-6xl mx-auto px-10">
+        <SecLabel label={ta.label} />
+
+        {/* Grid starts here — both headings are siblings at the same level */}
+        <div className="grid md:grid-cols-5 gap-14 items-start">
+
+          {/* ── Left col: heading + paragraphs ── */}
+          <div className="md:col-span-3">
+            <h2 className="font-serif font-bold text-figmaDark mb-12" style={{ fontSize: '2.7rem' }}>
+              {ta.heading} <em className="text-figmaGold not-italic">{ta.headingGold}</em>
+            </h2>
+            <div className="space-y-5 text-gray-600 text-[15px] leading-[1.95]">
+              <p>{ta.p1Pre}<strong className="text-figmaDark font-bold">{ta.p1Bold}</strong>{ta.p1Post}</p>
+              <p>{ta.p2Pre}<strong className="text-figmaDark font-bold">{ta.p2Bold}</strong>{ta.p2Post}</p>
+              <p>{ta.p3Pre}<strong className="text-figmaDark font-bold">{ta.p3Bold}</strong>{ta.p3Post}</p>
+            </div>
+          </div>
+
+          {/* ── Right col: Domains heading + list ── */}
+          <div className="md:col-span-2">
+            <h3 className="font-serif font-bold text-figmaDark mb-12" style={{ fontSize: '2.7rem' }}>
+              {ta.domainsTitle}
+            </h3>
+            <div className="flex flex-col">
+              {ta.domains.map((domain, i) => (
+                <div key={i} className={`flex items-center gap-4 py-4${i < ta.domains.length - 1 ? ' border-b border-gray-100' : ''}`}>
+                  <div className="w-[22px] h-[22px] rounded-full bg-figmaGold flex-shrink-0 flex items-center justify-center">
+                    <svg width="11" height="9" viewBox="0 0 11 9" fill="none">
+                      <path d="M1.5 4.5L4 7L9.5 1.5" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                  <span className="text-figmaDark font-sans font-semibold text-[13px] tracking-wide uppercase">{domain}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SKILLS SECTION — Vertical 1-col white cards on dark bg
+═══════════════════════════════════════════════════════════════ */
+function SkillsSection({ language, onOpenSystemDesign, onOpenUIUXDesign, onOpenVibeCoding }) {
+  const T  = TRANSLATIONS[language];
+  const ts = T.skills;
+  return (
+    <section id="skills" className="bg-figmaDark py-24">
+      <div className="max-w-6xl mx-auto px-10">
+        <div className="w-full text-left mb-12 flex flex-col items-start">
+          <SecLabel label={ts.label} onDark />
+          <h2 className="font-serif font-bold text-white" style={{ fontSize: '2.7rem' }}>
+            <em className="text-figmaGold not-italic">{ts.headingGold}</em> {ts.heading}
+          </h2>
+        </div>
+
+        <div className="flex flex-col gap-5 w-full">
+          {ts.cards.map((card, i) => (
+            <div key={i} className="skill-row-card" style={{ alignItems: 'flex-start' }}>
+              {/* Logo icon */}
+              <div className="skill-icon-box" style={{ marginTop: '2px' }}>
+                <img src={card.logo} alt={card.title}
+                  onError={e => { e.target.style.display = 'none'; }} />
+              </div>
+              {/* Content — flex column so button anchors to bottom */}
+              <div className="flex-1 min-w-0 flex flex-col">
+                {/* Title + badge tags */}
+                <div className="flex flex-wrap items-center gap-2 mb-2">
+                  <h3 className="text-figmaDark font-bold text-[13px] tracking-[0.08em] whitespace-nowrap">{card.title}</h3>
+                  {card.tags.map(tag => (
+                    <span key={tag} className="bg-gray-100 border border-gray-200 text-gray-500 text-[12px] px-3 py-[3px] rounded-full whitespace-nowrap">{tag}</span>
+                  ))}
+                </div>
+                {/* Description */}
+                <p className="text-gray-500 text-[13px] leading-relaxed">{card.desc}</p>
+                {/* View Details — bottom-left, gold bg, white text (only when btn: true) */}
+                {card.btn && (
+                  <div className="mt-4 self-start">
+                    <button
+                      onClick={i === 0 ? onOpenSystemDesign : i === 1 ? onOpenUIUXDesign : i === 2 ? onOpenVibeCoding : undefined}
+                      className="inline-flex items-center gap-2 bg-figmaGold text-white font-sans font-medium text-sm px-5 py-2.5 rounded-lg whitespace-nowrap shadow-sm hover:brightness-110 transition-all"
+                      style={i > 2 ? { cursor: 'default' } : {}}>
+                      {ts.viewDetails} <IcoArrow size={13} />
+                    </button>
+                  </div>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   PROJECTS SECTION — 3-col dark grid
+═══════════════════════════════════════════════════════════════ */
+function ProjectsSection({ language, onOpenProject }) {
+  const T  = TRANSLATIONS[language];
+  const tp = T.projects;
+  return (
+    <section id="projects" className="bg-figmaLightBg py-24">
+      <div className="max-w-6xl mx-auto px-10">
+        <div className="w-full text-left mb-12 flex flex-col items-start">
+          <SecLabel label={tp.label} />
+          <h2 className="font-serif font-bold text-figmaDark" style={{ fontSize: '2.7rem' }}>
+            <em className="text-figmaGold not-italic">{tp.headingGold}</em> {tp.heading}
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
+          {tp.items.map((item, i) => (
+            <div key={i} className="proj-card">
+              <img
+                src={item.img} alt={item.title}
+                className="proj-card-img"
+                onError={e => { e.target.style.background = '#2a3b59'; e.target.style.minHeight = '180px'; }}
+              />
+              <div className="proj-card-body">
+                <h3 className="font-sans text-figmaGold font-semibold text-[14px] leading-snug">{item.title}</h3>
+                <p className="text-gray-400 text-[13px] leading-relaxed flex-1">{item.desc}</p>
+                <button className="proj-card-btn" onClick={() => {
+                  onOpenProject(item.id);
+                  window.scrollTo({ top: 0, behavior: 'smooth' });
+                }}>
+                  {tp.showMore}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTACT SECTION — dark navy bg, white cards
+═══════════════════════════════════════════════════════════════ */
+function ContactSection({ language }) {
+  const T  = TRANSLATIONS[language];
+  const tc = T.contact;
+
+  const CONTACTS = [
+    {
+      href:   'https://mail.google.com/mail/?view=cm&fs=1&to=nhanguyen192004@gmail.com',
+      Ico:    IcoMail,
+      label:  'nhanguyen192004@gmail.com',
+      target: '_blank',
+    },
+    {
+      href:   'tel:0373141060',
+      Ico:    IcoPhone,
+      label:  '0373 141 060',
+      target: '_self',
+    },
+    {
+      href:   'https://www.linkedin.com/in/trang-nha-nguyen-thi/?trk=opento_nprofile_details',
+      Ico:    IcoLinkedin,
+      label:  'LinkedIn',
+      target: '_blank',
+    },
+  ];
+
+  return (
+    <section id="contact" className="bg-figmaDark py-24">
+      <div className="max-w-6xl mx-auto px-10">
+        <div className="w-full text-left mb-12 flex flex-col items-start">
+          <SecLabel label={tc.label} onDark />
+          <h2 className="font-serif font-bold" style={{ fontSize: '2.7rem' }}>
+            <em className="text-figmaGold not-italic">{tc.headingGold}</em>{' '}
+            <span className="text-white">{tc.heading}</span>
+          </h2>
+        </div>
+        <div className="flex flex-col md:flex-row gap-5">
+          {CONTACTS.map(({ href, Ico, label, target }) => (
+            <a key={label} href={href} target={target} rel="noopener noreferrer" className="contact-card">
+              <Ico size={20} className="flex-shrink-0" style={{ color: '#c2a67f' }} />
+              <span className="text-white font-medium text-[14px]">{label}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   FOOTER + FAB — PRESERVED
+═══════════════════════════════════════════════════════════════ */
+function Footer({ language }) {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const h = () => setShow(window.scrollY > 500);
+    window.addEventListener('scroll', h, { passive: true });
+    return () => window.removeEventListener('scroll', h);
+  }, []);
+  return (
+    <>
+      <footer className="bg-figmaDark border-t border-white/[0.08] py-5 text-center">
+        <p className="text-gray-500 text-[12px] tracking-wide">{TRANSLATIONS[language].footer}</p>
+      </footer>
+      <button onClick={() => goTo('home')} aria-label="Back to top"
+        className={`fixed bottom-8 right-8 z-40 w-11 h-11 rounded-full bg-figmaDark text-figmaGold border border-figmaGold/40 flex items-center justify-center shadow-lg transition-all duration-300 hover:bg-figmaGold hover:text-white ${
+          show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3 pointer-events-none'
+        }`}>
+        <Svg size={18}><path d="m18 15-6-6-6 6"/></Svg>
+      </button>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SYSTEM DESIGN SKILL — DATA
+═══════════════════════════════════════════════════════════════ */
+const SD_PROJECTS = [
+  {
+    id: 'sd-ai',
+    thumb: './main/ai.jpg',
+    name: 'TravelAI – Agentic AI Travel Planning Chatbot',
+    desc: 'TravelAI is an AI-powered chatbot designed to help users create personalized travel plans based on destinations, preferences, budgets, and schedules. The system applies Multi-Agent architecture and RAG to dynamically generate structured itineraries.',
+    detail: 'TravelAI is an Agentic AI travel planning chatbot designed to help users create personalized travel itineraries based on their preferences, budget, and schedule. The system leverages a Multi-Agent architecture combined with Retrieval-Augmented Generation (RAG) to collect, analyze, and synthesize information from multiple sources. As a Business Analyst, I was responsible for requirement elicitation, business process modeling, use case analysis, user story development, and solution design to ensure the system meets user needs effectively.',
+    sections: [
+      { label: 'BUSINESS PROCESS MODELED IN BPMN', type: 'flat',     images: ['./systemskill/ai/workflow.jpg'] },
+      { label: 'OVERALL USE CASE DIAGRAM',         type: 'centered', images: ['./systemskill/ai/usecase1.jpg'] },
+      { label: 'LEVEL 1 USE CASE DIAGRAM',         type: 'grid',     images: ['./systemskill/ai/usecase2.jpg','./systemskill/ai/usecase3.jpg','./systemskill/ai/usecase4.jpg'] },
+      { label: 'LEVEL 2 USE CASE DIAGRAM',         type: 'grid',     images: ['./systemskill/ai/usecase5.jpg','./systemskill/ai/usecase6.jpg'] },
+      { label: 'UC SPECIFICATION',                 type: 'grid',     images: ['./systemskill/ai/ucspe.jpg','./systemskill/ai/ucspe2.jpg'] },
+      { label: 'SEQUENCE DIAGRAM',                 type: 'grid',     images: ['./systemskill/ai/se1.jpg','./systemskill/ai/se2.jpg','./systemskill/ai/se3.jpg','./systemskill/ai/se4.jpg'] },
+      { label: 'ENTITY RELATIONSHIP DIAGRAM',      type: 'flat',     images: ['./systemskill/ai/erd.png'] },
+    ],
+  },
+  {
+    id: 'sd-yen',
+    thumb: './main/yen.jpg',
+    name: "Nam An Bird's Nest ERP – Production Module",
+    desc: "Nam An Bird's Nest ERP System is an enterprise solution developed to manage sales, inventory, and warehouse operations across multiple departments, with focus on the production module.",
+    detail: "Nam An Bird's Nest ERP is a production management module within an ERP system for the bird's nest manufacturing industry. The solution supports raw material management, production planning, and manufacturing workflows to optimize operational efficiency. My role focused on requirement analysis, BPMN modeling, use case design, and user story documentation.",
+    sections: [
+      {
+        label: 'USER STORY',
+        type: 'flat',
+        images: ['./systemskill/yen/us.jpg'],
+      },
+      {
+        label: 'OVERALL USE CASE DIAGRAM',
+        type: 'centered',
+        images: ['./systemskill/yen/usecaseoverall.jpg'],
+      },
+      {
+        label: 'SCOPE',
+        type: 'scope',
+        scopeText: 'The ERP system includes multiple modules, as shown in the overall use case diagram. This portfolio focuses on:',
+        scopeBadge: 'Production Management',
+      },
+      {
+        label: 'BUSINESS PROCESS MODELED IN BPMN',
+        type: 'flat',
+        images: ['./systemskill/yen/workflow.jpg'],
+      },
+      {
+        label: 'USE CASE DIAGRAM',
+        type: 'grid',
+        images: ['./systemskill/yen/uc1.jpg', './systemskill/yen/uc2.jpg'],
+      },
+      {
+        label: 'USE CASE SPECIFICATION',
+        type: 'grid',
+        images: ['./systemskill/yen/ucspe1.jpg', './systemskill/yen/ucspe2.jpg'],
+      },
+      {
+        label: 'SEQUENCE DIAGRAM',
+        type: 'grid',
+        images: ['./systemskill/yen/se1.jpg', './systemskill/yen/se2.jpg', './systemskill/yen/se3.jpg', './systemskill/yen/se4.jpg'],
+      },
+      {
+        label: 'DFD',
+        type: 'flat',
+        images: ['./systemskill/yen/dfd.png'],
+      },
+    ],
+  },
+  {
+    id: 'sd-go',
+    thumb: './main/go.jpg',
+    name: 'Wonder Wood ERP – Human Resources & Finance Module',
+    desc: 'Wonder Wood Manufacturing Management System is designed to support production planning, material management, and manufacturing operations, with dedicated HR and Finance modules.',
+    detail: 'Wonder Wood ERP is an enterprise resource planning system developed for a furniture manufacturing company. The Human Resources & Finance Module supports employee management, attendance tracking, payroll processing, and financial operations. My role focused on requirement analysis, business process modeling, use case design, and solution development for HR and finance workflows.',
+    sections: [
+      {
+        label: 'USER STORY',
+        type: 'flat',
+        images: ['./systemskill/go/us1.jpg'],
+      },
+      {
+        label: 'OVERALL USE CASE DIAGRAM',
+        type: 'centered',
+        images: ['./systemskill/go/usecaseoverall.jpg'],
+      },
+      {
+        label: 'SCOPE',
+        type: 'scope',
+        scopeText: 'The ERP system includes multiple modules, as shown in the overall use case diagram. This portfolio focuses on:',
+        scopeBadge: 'Human Resource',
+      },
+      {
+        label: 'BUSINESS PROCESS MODELED IN BPMN',
+        type: 'flat',
+        images: ['./systemskill/go/workflow.jpg'],
+      },
+      {
+        label: 'USE CASE DIAGRAM',
+        type: 'grid',
+        images: ['./systemskill/go/uc1.jpg', './systemskill/go/uc2.jpg'],
+      },
+      {
+        label: 'USE CASE SPECIFICATION',
+        type: 'grid',
+        images: ['./systemskill/go/ucspe1.jpg', './systemskill/go/ucspe2.jpg'],
+      },
+      {
+        label: 'ERD',
+        type: 'flat',
+        images: ['./systemskill/go/erd.png'],
+      },
+    ],
+  },
+  {
+    id: 'sd-tauhu',
+    thumb: './main/tauhu.jpg',
+    name: 'Yummy Food ERP – Sales Module',
+    desc: 'Yummy Food Ordering & Management System is a platform developed to streamline food ordering, payment processing, and order management processes for restaurant operations.',
+    detail: 'Yummy Food ERP is an enterprise resource planning system developed for restaurant operations. The Sales Module supports order management, payment processing, and point-of-sale (POS) activities to streamline service workflows and enhance customer experience. My responsibilities included requirement gathering, business process analysis, BPMN modeling, use case design, and solution development for sales operations.',
+    sections: [
+      { label: 'USER STORY',                   type: 'flat',     images: ['./systemskill/tauhu/us.jpg'] },
+      { label: 'OVERALL USE CASE DIAGRAM',     type: 'centered', images: ['./systemskill/tauhu/usecaseoverall.jpg'] },
+      { label: 'SCOPE', type: 'scope', scopeText: 'The ERP system includes multiple modules, as shown in the overall use case diagram. This portfolio focuses on:', scopeBadge: 'Sales Management' },
+      { label: 'BUSINESS PROCESS MODELED IN BPMN', type: 'flat', images: ['./systemskill/tauhu/workflow.jpg'] },
+      { label: 'USE CASE DIAGRAM',             type: 'grid',     images: ['./systemskill/tauhu/uc1.jpg','./systemskill/tauhu/uc2.jpg'] },
+      { label: 'USE CASE SPECIFICATION',       type: 'grid',     images: ['./systemskill/tauhu/ucspe1.jpg','./systemskill/tauhu/ucspe2.jpg'] },
+      { label: 'ENTITY RELATIONSHIP DIAGRAM',  type: 'flat',     images: ['./systemskill/tauhu/erd.jpg'] },
+    ],
+  },
+  {
+    id: 'sd-shea',
+    thumb: './main/theshea.jpg',
+    name: 'The SHEA Fashion Inventory Management System (Mobile App)',
+    desc: 'The SHEA is a mobile application designed to support inventory tracking and stock management for fashion products, improving warehouse accuracy and shelf management efficiency.',
+    detail: 'The SHEA Fashion Inventory Management System is a mobile application developed to support inventory operations in the fashion retail industry. The system enables inventory tracking, shelf management, stock movement, and inventory updates in real time, helping improve inventory accuracy and operational efficiency. My role focused on requirement analysis, business process modeling, use case design, and solution development for inventory management workflows.',
+    sections: [
+      { label: 'OVERALL USE CASE DIAGRAM',  type: 'centered', images: ['./systemskill/theshea/usecaseoverall.jpg'] },
+      { label: 'LEVEL 1 USE CASE DIAGRAM',  type: 'grid',     images: ['./systemskill/theshea/usecaselevel1_1.jpg','./systemskill/theshea/usecaselevel1_2.jpg'] },
+      { label: 'LEVEL 2 USE CASE DIAGRAM',  type: 'grid',     images: ['./systemskill/theshea/usecaselevel2_1.jpg','./systemskill/theshea/usecaselevel2_2.jpg'] },
+      { label: 'USE CASE SPECIFICATION',    type: 'grid',     images: ['./systemskill/theshea/ucspe1.jpg','./systemskill/theshea/ucspe2.jpg'] },
+      { label: 'ACTIVITY DIAGRAM',          type: 'grid',     images: ['./systemskill/theshea/ad1.jpg','./systemskill/theshea/ad2.jpg'] },
+    ],
+  },
+];
+
+/* ═══════════════════════════════════════════════════════════════
+   UI/UX DESIGN SKILL — DATA
+═══════════════════════════════════════════════════════════════ */
+const UX_PROJECTS = [
+  {
+    id: 'ux-ai',
+    thumb: './designskill/ai.jpg',
+    name: 'TravelAI – Agentic AI Travel Planning Chatbot',
+    desc: 'TravelAI is an AI-powered chatbot designed to help users create personalized travel plans based on destinations, preferences, budgets, and schedules. The system applies Multi-Agent architecture and RAG to dynamically generate structured itineraries.',
+    detail: 'TravelAI is an Agentic AI travel planning chatbot designed to help users create personalized travel itineraries based on their preferences, budget, and schedule. As UX/UI Designer, I was responsible for user flow analysis, wireframing, prototyping in Figma, and delivering high-fidelity screens covering the full journey from onboarding to itinerary generation.',
+    sections: [
+      { label: 'UX DESIGN', type: 'ux-wide', videoBtn: true, btnLabel: 'Video', images: ['./designskill/ai/fig1.jpg'] },
+      { label: 'UI DESIGN', type: 'grid',    images: ['./designskill/ai/fig2.jpg','./designskill/ai/fig3.jpg','./designskill/ai/fig4.jpg','./designskill/ai/fig5.jpg','./designskill/ai/fig6.jpg','./designskill/ai/fig7.jpg'] },
+    ],
+  },
+  {
+    id: 'ux-yen',
+    thumb: './designskill/yen.jpg',
+    name: "Nam An Bird's Nest ERP – Production Module",
+    desc: "Nam An Bird's Nest ERP System is an enterprise solution developed to manage sales, inventory, and warehouse operations across multiple departments, with focus on the production module.",
+    detail: "Nam An Bird's Nest ERP is a production management module within an ERP system for the bird's nest manufacturing industry. As UX/UI Designer, I designed the complete interface system covering login, dashboard, raw material management, production planning, and reporting screens with a premium teal-gold brand palette.",
+    sections: [
+      { label: 'UX DESIGN', type: 'ux-wide', videoBtn: true, btnLabel: 'Prototype', images: ['./designskill/yen/fig1.jpg'] },
+      { label: 'UI DESIGN', type: 'grid',    images: ['./designskill/yen/fig2.jpg','./designskill/yen/fig3.jpg','./designskill/yen/fig4.jpg','./designskill/yen/fig5.jpg','./designskill/yen/fig6.jpg','./designskill/yen/fig7.jpg'] },
+    ],
+  },
+  {
+    id: 'ux-go',
+    thumb: './designskill/go.jpg',
+    name: 'Wonder Wood ERP – Human Resources & Finance Module',
+    desc: 'Wonder Wood Manufacturing Management System is designed to support production planning, material management, and manufacturing operations, with dedicated HR and Finance modules.',
+    detail: 'Wonder Wood ERP is an enterprise resource planning system developed for a furniture manufacturing company. As UX/UI Designer, I crafted the interface for HR and Finance modules — including employee management, attendance tracking, payroll, and financial dashboards — using a warm wood-inspired color palette with glassmorphism accents.',
+    sections: [
+      { label: 'UX DESIGN', type: 'ux-wide', videoBtn: true, btnLabel: 'Prototype', images: ['./designskill/go/fig1.jpg'] },
+      { label: 'UI DESIGN', type: 'grid',    images: ['./designskill/go/fig2.jpg','./designskill/go/fig3.jpg','./designskill/go/fig4.jpg','./designskill/go/fig5.jpg','./designskill/go/fig6.jpg','./designskill/go/fig7.jpg'] },
+    ],
+  },
+  {
+    id: 'ux-tauhu',
+    thumb: './designskill/tauhu.jpg',
+    name: 'Yummy Food ERP – Sales Module',
+    desc: 'Yummy Food Ordering & Management System is a platform developed to streamline food ordering, payment processing, and order management processes for restaurant operations.',
+    detail: 'Yummy Food ERP is a restaurant management system focused on the Sales module. As UX/UI Designer, I designed the POS interface, order management screens, menu browsing, and revenue dashboards, combining a vibrant food-forward visual identity with clear transactional workflows.',
+    sections: [
+      { label: 'UX DESIGN', type: 'ux-wide', videoBtn: true, btnLabel: 'Prototype', images: ['./designskill/tauhu/fig1.jpg'] },
+      { label: 'UI DESIGN', type: 'grid',    images: ['./designskill/tauhu/fig2.jpg','./designskill/tauhu/fig3.jpg','./designskill/tauhu/fig4.jpg','./designskill/tauhu/fig5.jpg','./designskill/tauhu/fig6.jpg','./designskill/tauhu/fig7.jpg'] },
+    ],
+  },
+  {
+    id: 'ux-shea',
+    thumb: './designskill/theshea.jpg',
+    name: 'The SHEA Fashion Inventory Management System (Mobile App)',
+    desc: 'The SHEA is a mobile application designed to support inventory tracking and stock management for fashion products, improving warehouse accuracy and shelf management efficiency.',
+    detail: 'The SHEA is a mobile inventory management app for the fashion retail industry. As UX/UI Designer, I designed the mobile interface covering shelf location mapping, barcode scanning, stock updates, and inventory reporting — optimized for single-hand operation on iPhone with a clean monochrome-accented brand style.',
+    sections: [
+      { label: 'UX DESIGN', type: 'ux-mobile', videoBtn: true, btnLabel: 'Prototype', images: ['./designskill/theshea/fig1.jpg'] },
+      { label: 'UI DESIGN', type: 'grid-3',    images: ['./designskill/theshea/fig2.jpg','./designskill/theshea/fig3.jpg','./designskill/theshea/fig4.jpg','./designskill/theshea/fig5.jpg','./designskill/theshea/fig6.jpg','./designskill/theshea/fig7.jpg'] },
+    ],
+  },
+];
+
+/* ── VI localisation for project cards (name + desc + detail) ── */
+const PROJ_VI = {
+  'sd-ai':    { name: 'TravelAI – Agentic AI Chatbot Lập Kế Hoạch Du Lịch',                     desc: 'TravelAI là một Chatbot ứng dụng công nghệ AI được thiết kế để giúp người dùng tạo kế hoạch du lịch cá nhân hóa dựa trên điểm đến, sở thích, ngân sách và lịch trình. Hệ thống áp dụng kiến trúc Multi-Agent và RAG để tạo ra các hành trình có cấu trúc một cách linh hoạt.' },
+  'sd-yen':   { name: 'ERP Yến Sào Nam An – Production Module',                                  desc: 'Hệ thống ERP Yến Sào Nam An là một giải pháp doanh nghiệp được phát triển để quản lý hoạt động bán hàng, tồn kho và vận hành kho bãi giữa nhiều phòng ban, tập trung trọng tâm vào Production Module.' },
+  'sd-go':    { name: 'ERP Wonder Wood – Human Resources & Finance Module',                       desc: 'Hệ thống quản lý sản xuất ERP Wonder Wood được thiết kế để hỗ trợ lập kế hoạch sản xuất, quản lý nguyên vật liệu và các hoạt động sản xuất, với các module chuyên biệt Human Resources và Finance Module.' },
+  'sd-tauhu': { name: 'ERP Yummy Food – Sales Module',                                           desc: 'Hệ thống ERP hỗ trợ quản lý bán hàng, đơn hàng và thanh toán cho nhà hàng. Giải pháp giúp tối ưu quy trình phục vụ, nâng cao hiệu quả vận hành tại điểm bán và cải thiện trải nghiệm khách hàng.' },
+  'sd-shea':  { name: 'Hệ Thống Quản Lý Tồn Kho Thời Trang The SHEA (Mobile App)',               desc: 'Ứng dụng quản lý tồn kho trên thiết bị di động, hỗ trợ quản lý kệ hàng, hàng hóa và luân chuyển tồn kho. Giải pháp giúp nâng cao độ chính xác và hiệu quả vận hành kho.' },
+  'ux-ai':    { name: 'TravelAI – Agentic AI Chatbot Lập Kế Hoạch Du Lịch',                     desc: 'TravelAI là một Chatbot ứng dụng công nghệ AI được thiết kế để giúp người dùng tạo kế hoạch du lịch cá nhân hóa dựa trên điểm đến, sở thích, ngân sách và lịch trình. Hệ thống áp dụng kiến trúc Multi-Agent và RAG để tạo ra các hành trình có cấu trúc một cách linh hoạt.',
+              detail: 'TravelAI là một Agentic AI travel planning chatbot được thiết kế để giúp người dùng tạo lịch trình du lịch cá nhân hóa dựa trên sở thích, ngân sách và lịch trình. Hệ thống tận dụng kiến trúc Multi-Agent kết hợp với Retrieval-Augmented Generation (RAG) để thu thập, phân tích và tổng hợp thông tin từ nhiều nguồn. Với vai trò là Business Analyst, tôi chịu trách nhiệm về requirement elicitation, business process modeling, use case analysis, user story development và solution design để đảm bảo hệ thống đáp ứng hiệu quả nhu cầu của người dùng.' },
+  'ux-yen':   { name: 'ERP Yến Sào Nam An – Production Module',                                  desc: 'Hệ thống ERP Yến Sào Nam An là một giải pháp doanh nghiệp được phát triển để quản lý hoạt động bán hàng, tồn kho và vận hành kho bãi giữa nhiều phòng ban, tập trung trọng tâm vào Production Module.' },
+  'ux-go':    { name: 'ERP Wonder Wood – Human Resources & Finance Module',                       desc: 'Hệ thống quản lý sản xuất ERP Wonder Wood được thiết kế để hỗ trợ lập kế hoạch sản xuất, quản lý nguyên vật liệu và các hoạt động sản xuất, với các module chuyên biệt Human Resources và Finance Module.' },
+  'ux-tauhu': { name: 'ERP Yummy Food – Sales Module',                                           desc: 'Hệ thống ERP hỗ trợ quản lý bán hàng, đơn hàng và thanh toán cho nhà hàng. Giải pháp giúp tối ưu quy trình phục vụ, nâng cao hiệu quả vận hành tại điểm bán và cải thiện trải nghiệm khách hàng.' },
+  'ux-shea':  { name: 'Hệ Thống Quản Lý Tồn Kho Thời Trang The SHEA (Mobile App)',               desc: 'Ứng dụng quản lý tồn kho trên thiết bị di động, hỗ trợ quản lý kệ hàng, hàng hóa và luân chuyển tồn kho. Giải pháp giúp nâng cao độ chính xác và hiệu quả vận hành kho.' },
+};
+const projName   = (proj, lang) => lang === 'VI' ? (PROJ_VI[proj.id]?.name   || proj.name)              : proj.name;
+const projDesc   = (proj, lang) => lang === 'VI' ? (PROJ_VI[proj.id]?.desc   || proj.desc)              : proj.desc;
+const projDetail = (proj, lang) => lang === 'VI' ? (PROJ_VI[proj.id]?.detail || PROJ_VI[proj.id]?.desc || proj.detail || proj.desc)
+                                                 : (proj.detail || proj.desc);
+
+/* ═══════════════════════════════════════════════════════════════
+   SYSTEM DESIGN DETAIL VIEW
+═══════════════════════════════════════════════════════════════ */
+function SystemDesignDetailView({ onBack, onOpenUIUX, language }) {
+
+  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  /* ── Per-project active section state ── */
+  const [activeSec, setActiveSec] = useState({});
+
+  const secId = (projId, label) =>
+    (projId + '-' + label).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  useEffect(() => {
+    const observers = [];
+    SD_PROJECTS.forEach(proj => {
+      proj.sections.forEach(sec => {
+        const el = document.getElementById(secId(proj.id, sec.label));
+        if (!el) return;
+        const obs = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting)
+              setActiveSec(prev => ({ ...prev, [proj.id]: sec.label }));
+          },
+          { rootMargin: '-10% 0px -60% 0px', threshold: 0 }
+        );
+        obs.observe(el);
+        observers.push(obs);
+      });
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, []);
+
+  const scrollToSec = (projId, label) =>
+    document.getElementById(secId(projId, label))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  /* ── Image card ── */
+  const ImgCard = ({ src, flat = false }) => (
+    <div className="w-full bg-white rounded-xl border border-gray-100 shadow-sm p-3 md:p-5 flex justify-center">
+      <img src={src} alt=""
+        className={flat ? 'doc-img-flat' : 'doc-img'}
+        onError={e => { e.target.closest('div').style.display = 'none'; }} />
+    </div>
+  );
+
+  /* ── Section block ── */
+  const DocSection = ({ sec }) => {
+    const { label, type, images } = sec;
+    return (
+      <div className="mb-10">
+        {/* Centered section divider */}
+        <SectionDivider label={label} />
+
+        {type === 'flat' && <ImgCard src={images[0]} flat />}
+
+        {type === 'centered' && (
+          <div className="w-full max-w-4xl mx-auto">
+            <ImgCard src={images[0]} />
+          </div>
+        )}
+
+        {type === 'mobile' && (
+          <div className="w-full max-w-sm mx-auto">
+            <ImgCard src={images[0]} />
+          </div>
+        )}
+
+        {type === 'grid' && (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+            {images.map((src, j) => <ImgCard key={j} src={src} />)}
+          </div>
+        )}
+
+        {/* Description text block */}
+        {type === 'text' && (
+          <div className="bg-white rounded-xl border border-gray-100 shadow-sm px-8 py-6">
+            <p className="font-sans text-gray-600 text-[14px] leading-[1.95]">{sec.content}</p>
+          </div>
+        )}
+
+        {/* Scope golden box */}
+        {type === 'scope' && (
+          <div className="bg-figmaGold/10 border border-figmaGold/30 rounded-2xl p-8 my-2 text-center max-w-4xl mx-auto">
+            <p className="font-sans text-figmaDark text-[13.5px] leading-[1.85] mb-6">{sec.scopeText}</p>
+            <span className="inline-block bg-figmaGold text-white font-sans font-semibold text-sm px-6 py-2 rounded-full">
+              {sec.scopeBadge}
+            </span>
+          </div>
+        )}
+
+        {/* BPMN modules: one header + multiple sub-labeled flat images */}
+        {type === 'flat-modules' && (
+          <div className="flex flex-col gap-8">
+            {sec.modules.map((mod, mi) => (
+              <div key={mi}>
+                <p className="font-sans font-semibold text-figmaDark text-[12px] tracking-[0.1em] uppercase mb-3">{mod.subLabel}</p>
+                <ImgCard src={mod.image} flat />
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-figmaLightBg flex flex-col">
+
+      {/* ── Sticky top bar ── */}
+      <div className="sticky top-0 z-50 bg-figmaDark"
+        style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.22)' }}>
+        <div className="max-w-7xl mx-auto px-8 h-[60px] flex items-center justify-between gap-6">
+          <button onClick={onBack}
+            className="inline-flex items-center gap-2 text-white text-[13px] font-semibold px-4 py-[7px] rounded border border-white/20 hover:bg-white/10 transition-all select-none">
+            <IcoBack size={14} /> Back
+          </button>
+          <div className="flex items-center gap-5 text-[12.5px]">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nhanguyen192004@gmail.com"
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-[6px] text-white/80 hover:text-white transition-colors no-underline">
+              <IcoMail size={13} className="text-figmaGold flex-shrink-0" />
+              nhanguyen192004@gmail.com
+            </a>
+            <span className="w-px h-3.5 bg-white/20" />
+            <span className="flex items-center gap-[6px] text-white/80">
+              <IcoPhone size={13} className="text-figmaGold flex-shrink-0" />
+              0373 141 060
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Page header (light bg) ── */}
+      <div className="bg-figmaLightBg pt-12 pb-10 px-8 text-center">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="font-sans text-figmaTextDark text-3xl font-bold tracking-wide uppercase mb-3">
+            SYSTEM DESIGN
+          </h1>
+          {/* Gold underline */}
+          <div className="mx-auto w-16 h-[3px] bg-figmaGold rounded-full" />
+        </div>
+      </div>
+
+      {/* ── 5 Project nav cards ── */}
+      <div className="bg-figmaLightBg pb-12 px-8">
+        <div className="max-w-6xl mx-auto">
+          {/* Row 1: 3 cards */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {SD_PROJECTS.slice(0, 3).map(proj => (
+              <div key={proj.id}
+                className="bg-white border border-figmaDark/25 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                  <img
+                    src={proj.thumb}
+                    alt={projName(proj, language)}
+                    className="w-full h-44 object-cover rounded-xl border border-gray-100 mb-4"
+                    onError={e => { e.target.style.display = 'none'; }}
+                  />
+                  <h4 className="font-sans font-semibold text-figmaTextDark text-[14px] leading-snug mb-2">{projName(proj, language)}</h4>
+                  <p className="text-gray-500 text-[13px] leading-relaxed">{projDesc(proj, language)}</p>
+                </div>
+                <button
+                  onClick={() => scrollTo(proj.id)}
+                  className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-2 rounded-xl mx-auto mt-6 hover:opacity-90 transition-all select-none block w-fit">
+                  {language === 'VI' ? 'Xem Chi Tiết' : 'View Details'}
+                </button>
+              </div>
+            ))}
+          </div>
+          {/* Row 2: 2 cards (left-aligned) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {SD_PROJECTS.slice(3).map(proj => (
+              <div key={proj.id}
+                className="bg-white border border-figmaDark/25 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                  <img
+                    src={proj.thumb}
+                    alt={projName(proj, language)}
+                    className="w-full h-44 object-cover rounded-xl border border-gray-100 mb-4"
+                    onError={e => { e.target.style.display = 'none'; }}
+                  />
+                  <h4 className="font-sans font-semibold text-figmaTextDark text-[14px] leading-snug mb-2">{projName(proj, language)}</h4>
+                  <p className="text-gray-500 text-[13px] leading-relaxed">{projDesc(proj, language)}</p>
+                </div>
+                <button
+                  onClick={() => scrollTo(proj.id)}
+                  className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-2 rounded-xl mx-auto mt-6 hover:opacity-90 transition-all select-none block w-fit">
+                  {language === 'VI' ? 'Xem Chi Tiết' : 'View Details'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Long-scroll document content ── */}
+      <div className="flex-1 py-10 px-8">
+        <div className="max-w-6xl mx-auto">
+          {SD_PROJECTS.map((proj, pi) => (
+            /* ── Relative block wrapper: scopes sticky sub-nav to this project only ── */
+            <div key={proj.id} className="relative w-full block mb-20">
+
+              {/* Project banner — anchor for nav-card scroll */}
+              <div id={proj.id} className="bg-figmaDark rounded-xl px-8 py-6 mb-0" style={{ scrollMarginTop: '70px' }}>
+                <p className="text-figmaGold text-[11px] font-semibold tracking-[0.16em] uppercase mb-2">
+                  Project {String(pi + 1).padStart(2, '0')}
+                </p>
+                <h2 className="font-sans font-bold text-white text-[18px] leading-snug mb-3">{projName(proj, language)}</h2>
+                <p className="text-gray-300/90 font-sans text-sm mt-3 leading-relaxed border-l-2 border-figmaGold/50 pl-4">{projDetail(proj, language)}</p>
+              </div>
+
+              {/* ── Sticky sub-nav — scoped: ghim khi lướt trong dự án này, tự nhả khi sang dự án tiếp ── */}
+              <div className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-md border-b border-gray-200/80">
+                <div className="max-w-6xl mx-auto px-2">
+                  <div className="flex items-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                    {proj.sections.map(sec => (
+                      <button key={sec.label} onClick={() => scrollToSec(proj.id, sec.label)}
+                        className={`px-4 py-[11px] text-[11px] tracking-[0.06em] whitespace-nowrap border-b-2 transition-all duration-150 font-sans uppercase ${
+                          activeSec[proj.id] === sec.label
+                            ? 'text-figmaDark font-bold border-figmaDark'
+                            : 'text-figmaGold font-medium border-transparent hover:text-figmaDark hover:border-gray-200'
+                        }`}>
+                        {sec.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* All document sections — each gets an anchor ID */}
+              <div className="pt-6">
+                {proj.sections.map((sec, si) => (
+                  <div key={si} id={secId(proj.id, sec.label)} style={{ scrollMarginTop: '108px' }}>
+                    <DocSection sec={sec} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider between projects */}
+              {pi < SD_PROJECTS.length - 1 && (
+                <div className="flex items-center gap-4 mt-16 mb-4">
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <span className="text-gray-300 text-[11px] tracking-[0.12em] uppercase">End of Project {String(pi + 1).padStart(2, '0')}</span>
+                  <div className="flex-1 h-px bg-gray-200" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* ── Footer navigation ── */}
+        <div className="flex justify-between items-center w-full max-w-6xl mx-auto px-4 py-12 mt-12 border-t border-gray-100 bg-transparent">
+          <button onClick={onBack}
+            className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer select-none">
+            <IcoBack size={14} /> Back
+          </button>
+          <button onClick={onOpenUIUX}
+            className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer select-none">
+            UI/UX DESIGN <IcoArrow size={14} />
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   UI/UX DESIGN DETAIL VIEW
+═══════════════════════════════════════════════════════════════ */
+function UIUXDesignDetailView({ onBack, onOpenSystemDesign, onOpenVibeCoding, language }) {
+
+  const scrollTo = id => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  /* ── Per-project active section state ── */
+  const [activeSec, setActiveSec] = useState({});
+
+  const secId = (projId, label) =>
+    (projId + '-' + label).toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+
+  useEffect(() => {
+    const observers = [];
+    UX_PROJECTS.forEach(proj => {
+      proj.sections.forEach(sec => {
+        const el = document.getElementById(secId(proj.id, sec.label));
+        if (!el) return;
+        const obs = new IntersectionObserver(
+          ([entry]) => {
+            if (entry.isIntersecting)
+              setActiveSec(prev => ({ ...prev, [proj.id]: sec.label }));
+          },
+          { rootMargin: '-10% 0px -60% 0px', threshold: 0 }
+        );
+        obs.observe(el);
+        observers.push(obs);
+      });
+    });
+    return () => observers.forEach(o => o.disconnect());
+  }, []);
+
+  const scrollToSec = (projId, label) =>
+    document.getElementById(secId(projId, label))?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  const ImgCard = ({ src }) => (
+    <div className="w-full bg-white rounded-xl border border-gray-100 shadow-sm p-3 md:p-5 flex justify-center">
+      <img src={src} alt=""
+        className="doc-img"
+        onError={e => { e.target.closest('div').style.display = 'none'; }} />
+    </div>
+  );
+
+  const DocSection = ({ sec }) => {
+    const { label, type, images } = sec;
+    return (
+      <div className="mb-10">
+        {/* Centered section divider */}
+        <SectionDivider label={label} />
+        {type === 'ux-wide' && (
+          <div className="w-full max-w-5xl mx-auto">
+            <ImgCard src={images[0]} />
+            {sec.videoBtn && (
+              <div className="flex justify-center mt-5">
+                <span className="bg-figmaGold text-white font-sans font-medium text-sm px-5 py-2.5 rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all w-fit shadow-sm cursor-pointer">
+                  <IcoLink size={16} /> {sec.btnLabel}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+        {type === 'ux-mobile' && (
+          <div className="w-full max-w-sm mx-auto">
+            <ImgCard src={images[0]} />
+            {sec.videoBtn && (
+              <div className="flex justify-center mt-5">
+                <span className="bg-figmaGold text-white font-sans font-medium text-sm px-5 py-2.5 rounded-2xl flex items-center gap-2 hover:opacity-90 transition-all w-fit shadow-sm cursor-pointer">
+                  <IcoLink size={16} /> {sec.btnLabel}
+                </span>
+              </div>
+            )}
+          </div>
+        )}
+        {type === 'grid' && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {images.map((src, j) => <ImgCard key={j} src={src} />)}
+          </div>
+        )}
+        {type === 'grid-3' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+            {images.map((src, j) => <ImgCard key={j} src={src} />)}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="min-h-screen bg-figmaLightBg flex flex-col">
+
+      {/* ── Sticky top bar ── */}
+      <div className="sticky top-0 z-50 bg-figmaDark"
+        style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.22)' }}>
+        <div className="max-w-7xl mx-auto px-8 h-[60px] flex items-center justify-between gap-6">
+          <button onClick={onBack}
+            className="inline-flex items-center gap-2 text-white text-[13px] font-semibold px-4 py-[7px] rounded border border-white/20 hover:bg-white/10 transition-all select-none">
+            <IcoBack size={14} /> Back
+          </button>
+          <div className="flex items-center gap-5 text-[12.5px]">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nhanguyen192004@gmail.com"
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-[6px] text-white/80 hover:text-white transition-colors no-underline">
+              <IcoMail size={13} className="text-figmaGold flex-shrink-0" />
+              nhanguyen192004@gmail.com
+            </a>
+            <span className="w-px h-3.5 bg-white/20" />
+            <span className="flex items-center gap-[6px] text-white/80">
+              <IcoPhone size={13} className="text-figmaGold flex-shrink-0" />
+              0373 141 060
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Page header ── */}
+      <div className="bg-figmaLightBg pt-12 pb-10 px-8 text-center">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="font-sans text-figmaTextDark text-3xl font-bold tracking-wide uppercase mb-3">
+            UI/UX DESIGN
+          </h1>
+          <div className="mx-auto w-16 h-[3px] bg-figmaGold rounded-full" />
+        </div>
+      </div>
+
+      {/* ── 5 Project nav cards ── */}
+      <div className="bg-figmaLightBg pb-12 px-8">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
+            {UX_PROJECTS.slice(0, 3).map(proj => (
+              <div key={proj.id}
+                className="bg-white border border-figmaDark/25 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                  <img src={proj.thumb} alt={projName(proj, language)}
+                    className="w-full h-44 object-cover rounded-xl border border-gray-100 mb-4"
+                    onError={e => { e.target.style.display = 'none'; }} />
+                  <h4 className="font-sans font-semibold text-figmaTextDark text-[14px] leading-snug mb-2">{projName(proj, language)}</h4>
+                  <p className="font-sans text-gray-500 text-xs md:text-sm mt-2 leading-relaxed">{projDesc(proj, language)}</p>
+                </div>
+                <button onClick={() => scrollTo(proj.id)}
+                  className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-2 rounded-xl mx-auto mt-6 hover:opacity-90 transition-all select-none block w-fit">
+                  {language === 'VI' ? 'Xem Chi Tiết' : 'View Details'}
+                </button>
+              </div>
+            ))}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {UX_PROJECTS.slice(3).map(proj => (
+              <div key={proj.id}
+                className="bg-white border border-figmaDark/25 rounded-2xl p-6 shadow-sm hover:shadow-md transition-all flex flex-col justify-between">
+                <div>
+                  <img src={proj.thumb} alt={projName(proj, language)}
+                    className="w-full h-44 object-cover rounded-xl border border-gray-100 mb-4"
+                    onError={e => { e.target.style.display = 'none'; }} />
+                  <h4 className="font-sans font-semibold text-figmaTextDark text-[14px] leading-snug mb-2">{projName(proj, language)}</h4>
+                  <p className="font-sans text-gray-500 text-xs md:text-sm mt-2 leading-relaxed">{projDesc(proj, language)}</p>
+                </div>
+                <button onClick={() => scrollTo(proj.id)}
+                  className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-2 rounded-xl mx-auto mt-6 hover:opacity-90 transition-all select-none block w-fit">
+                  {language === 'VI' ? 'Xem Chi Tiết' : 'View Details'}
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── Long-scroll document content ── */}
+      <div className="flex-1 py-10 px-8">
+        <div className="max-w-6xl mx-auto">
+          {UX_PROJECTS.map((proj, pi) => (
+            /* ── Relative block wrapper: scopes sticky sub-nav to this project only ── */
+            <div key={proj.id} className="relative w-full block mb-20">
+
+              {/* Project banner — anchor for nav-card scroll */}
+              <div id={proj.id} className="bg-figmaDark rounded-xl px-8 py-6 mb-0" style={{ scrollMarginTop: '70px' }}>
+                <p className="text-figmaGold text-[11px] font-semibold tracking-[0.16em] uppercase mb-2">
+                  Project {String(pi + 1).padStart(2, '0')}
+                </p>
+                <h2 className="font-sans font-bold text-white text-[18px] leading-snug mb-3">{projName(proj, language)}</h2>
+                <p className="text-gray-300/90 font-sans text-sm mt-3 leading-relaxed border-l-2 border-figmaGold/50 pl-4">{projDetail(proj, language)}</p>
+              </div>
+
+              {/* ── Sticky sub-nav — scoped: ghim khi lướt trong dự án này, tự nhả khi sang dự án tiếp ── */}
+              <div className="sticky top-0 z-50 w-full bg-white/95 backdrop-blur-md shadow-md border-b border-gray-200/80">
+                <div className="max-w-6xl mx-auto px-2">
+                  <div className="flex items-center overflow-x-auto" style={{ scrollbarWidth: 'none' }}>
+                    {proj.sections.map(sec => (
+                      <button key={sec.label} onClick={() => scrollToSec(proj.id, sec.label)}
+                        className={`px-5 py-[13px] text-[12px] tracking-[0.07em] whitespace-nowrap border-b-2 transition-all duration-150 font-sans uppercase ${
+                          activeSec[proj.id] === sec.label
+                            ? 'text-figmaDark font-bold border-figmaDark'
+                            : 'text-figmaGold font-medium border-transparent hover:text-figmaDark hover:border-gray-200'
+                        }`}>
+                        {sec.label}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* All document sections — each gets an anchor ID */}
+              <div className="pt-6">
+                {proj.sections.map((sec, si) => (
+                  <div key={si} id={secId(proj.id, sec.label)} style={{ scrollMarginTop: '108px' }}>
+                    <DocSection sec={sec} />
+                  </div>
+                ))}
+              </div>
+
+              {/* Divider between projects */}
+              {pi < UX_PROJECTS.length - 1 && (
+                <div className="flex items-center gap-4 mt-16 mb-4">
+                  <div className="flex-1 h-px bg-gray-200" />
+                  <span className="text-gray-300 text-[11px] tracking-[0.12em] uppercase">End of Project {String(pi + 1).padStart(2, '0')}</span>
+                  <div className="flex-1 h-px bg-gray-200" />
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* ── Footer navigation ── */}
+        <div className="flex justify-between items-center w-full max-w-6xl mx-auto px-4 py-12 mt-12 border-t border-gray-100 bg-transparent">
+          <button onClick={onOpenSystemDesign}
+            className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer select-none">
+            <IcoBack size={14} /> SYSTEM DESIGN
+          </button>
+          <button onClick={onOpenVibeCoding}
+            className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer select-none">
+            VIBE CODING <IcoArrow size={14} />
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   VIBE CODING DETAIL VIEW
+═══════════════════════════════════════════════════════════════ */
+function VibeCodingDetailView({ onBack, onOpenUIUX, language }) {
+
+  const ImgCard = ({ src }) => (
+    <div className="w-full bg-white rounded-xl border border-gray-100 shadow-sm p-3 md:p-5 flex justify-center">
+      <img src={src} alt=""
+        className="doc-img-flat"
+        onError={e => { e.target.closest('div').style.display = 'none'; }} />
+    </div>
+  );
+
+  const DocSection = ({ label, src }) => (
+    <div className="mb-10">
+      {/* Centered section divider */}
+      <SectionDivider label={label} />
+      <ImgCard src={src} />
+    </div>
+  );
+
+  return (
+    <div className="min-h-screen bg-figmaLightBg flex flex-col">
+
+      {/* ── Sticky top bar ── */}
+      <div className="sticky top-0 z-50 bg-figmaDark"
+        style={{ boxShadow: '0 2px 16px rgba(0,0,0,0.22)' }}>
+        <div className="max-w-7xl mx-auto px-8 h-[60px] flex items-center justify-between gap-6">
+          <button onClick={onBack}
+            className="inline-flex items-center gap-2 text-white text-[13px] font-semibold px-4 py-[7px] rounded border border-white/20 hover:bg-white/10 transition-all select-none">
+            <IcoBack size={14} /> Back
+          </button>
+          <div className="flex items-center gap-5 text-[12.5px]">
+            <a href="https://mail.google.com/mail/?view=cm&fs=1&to=nhanguyen192004@gmail.com"
+              target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-[6px] text-white/80 hover:text-white transition-colors no-underline">
+              <IcoMail size={13} className="text-figmaGold flex-shrink-0" />
+              nhanguyen192004@gmail.com
+            </a>
+            <span className="w-px h-3.5 bg-white/20" />
+            <span className="flex items-center gap-[6px] text-white/80">
+              <IcoPhone size={13} className="text-figmaGold flex-shrink-0" />
+              0373 141 060
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── Page header ── */}
+      <div className="bg-figmaLightBg pt-12 pb-6 px-8 text-center">
+        <div className="max-w-6xl mx-auto">
+          <h1 className="font-sans text-figmaTextDark text-3xl font-bold tracking-wide uppercase mb-3">
+            VIBE CODING
+          </h1>
+          <div className="mx-auto w-16 h-[3px] bg-figmaGold rounded-full mb-5" />
+          <p className="text-gray-500 font-sans text-sm leading-relaxed max-w-2xl mx-auto">
+            {language === 'VI'
+              ? 'Tôi kết hợp Gemini và Claude Code để tăng tốc quá trình phát triển phần mềm. Gemini hỗ trợ tạo prompt rõ ràng và chi tiết, trong khi Claude Code thực thi code trực tiếp trên máy của tôi qua terminal trong VS Code.'
+              : 'I leverage Gemini and Claude Code together to accelerate software development. Gemini helps craft clear and detailed prompts, while Claude Code executes code directly on my machine via terminal in VS Code.'}
+          </p>
+        </div>
+      </div>
+
+      {/* ── Project badge box ── */}
+      <div className="px-8 pb-2">
+        <div className="bg-figmaGold/5 border border-figmaGold/20 rounded-2xl p-6 my-6 text-center max-w-2xl mx-auto shadow-sm">
+          <span className="text-figmaGold font-sans text-sm md:text-base font-bold tracking-widest uppercase mb-3 block text-center">PROJECT</span>
+          <span className="bg-figmaGold/30 text-figmaDark font-sans font-semibold text-sm px-6 py-2.5 rounded-full inline-flex items-center gap-2 mt-2">
+            🤖 {language === 'VI' ? 'TravelAI – Agentic AI Chatbot Lập Kế Hoạch Du Lịch' : 'TravelAI – Agentic AI Travel Planning Chatbot'}
+          </span>
+        </div>
+      </div>
+
+      {/* ── Long-scroll content ── */}
+      <div className="flex-1 py-6 px-8">
+        <div className="max-w-6xl mx-auto">
+
+          <DocSection label="MULTI-AGENT SYSTEM ARCHITECTURE" src="./vibecoding/eng1.png" />
+          <DocSection label="MY VIBE CODING WORKFLOW"         src="./vibecoding/eng2.png" />
+
+          {/* ── Footer navigation ── */}
+          <div className="flex justify-between items-center w-full max-w-6xl mx-auto px-4 py-12 mt-12 border-t border-gray-100 bg-transparent">
+            <button onClick={onOpenUIUX}
+              className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer select-none">
+              <IcoBack size={14} /> UI/UX DESIGN
+            </button>
+            <button onClick={onBack}
+              className="bg-figmaDark text-white font-sans font-medium text-sm px-6 py-3 rounded-xl flex items-center gap-2 hover:opacity-90 active:scale-95 transition-all shadow-sm cursor-pointer select-none">
+              {language === 'VI' ? 'Về Trang Chủ' : 'Back To Home'} <IcoArrow size={14} />
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   ROOT APP
+═══════════════════════════════════════════════════════════════ */
+function App() {
+  const [selectedProject,      setSelectedProject]      = useState(null);
+  const [showSystemDesign,     setShowSystemDesign]     = useState(false);
+  const [showUIUXDesign,       setShowUIUXDesign]       = useState(false);
+  const [showVibeCoding,       setShowVibeCoding]       = useState(false);
+  const [language,             setLanguage]             = useState('EN');
+  const [isScrollToTopVisible, setIsScrollToTopVisible] = useState(false);
+
+  useEffect(() => {
+    if (selectedProject || showSystemDesign || showUIUXDesign || showVibeCoding) window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [selectedProject, showSystemDesign, showUIUXDesign, showVibeCoding]);
+
+  useEffect(() => {
+    const onScroll = () => setIsScrollToTopVisible(window.scrollY > 300);
+    window.addEventListener('scroll', onScroll);
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const scrollToTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  let view;
+  if (showSystemDesign) {
+    view = (
+      <SystemDesignDetailView
+        language={language}
+        onBack={() => { setShowSystemDesign(false); setTimeout(() => goTo('skills'), 80); }}
+        onOpenUIUX={() => { setShowSystemDesign(false); setShowUIUXDesign(true); window.scrollTo(0, 0); }}
+      />
+    );
+  } else if (showUIUXDesign) {
+    view = (
+      <UIUXDesignDetailView
+        language={language}
+        onBack={() => { setShowUIUXDesign(false); setTimeout(() => goTo('skills'), 80); }}
+        onOpenSystemDesign={() => { setShowUIUXDesign(false); setShowSystemDesign(true); window.scrollTo(0, 0); }}
+        onOpenVibeCoding={() => { setShowUIUXDesign(false); setShowVibeCoding(true); window.scrollTo(0, 0); }}
+      />
+    );
+  } else if (showVibeCoding) {
+    view = (
+      <VibeCodingDetailView
+        language={language}
+        onBack={() => { setShowVibeCoding(false); setTimeout(() => goTo('skills'), 80); }}
+        onOpenUIUX={() => { setShowVibeCoding(false); setShowUIUXDesign(true); window.scrollTo(0, 0); }}
+      />
+    );
+  } else if (selectedProject) {
+    view = (
+      <ProjectDetailView
+        project={selectedProject}
+        language={language}
+        onBack={() => {
+          setSelectedProject(null);
+          setTimeout(() => goTo('projects'), 80);
+        }}
+      />
+    );
+  } else {
+    view = (
+      <div className="font-sans">
+        <Header language={language} setLanguage={setLanguage} />
+        <main>
+          <HomeSection   language={language} />
+          <AboutSection  language={language} />
+          <SkillsSection language={language} onOpenSystemDesign={() => setShowSystemDesign(true)} onOpenUIUXDesign={() => setShowUIUXDesign(true)} onOpenVibeCoding={() => setShowVibeCoding(true)} />
+          <ProjectsSection language={language} onOpenProject={setSelectedProject} />
+          <ContactSection  language={language} />
+        </main>
+        <Footer language={language} />
+      </div>
+    );
+  }
+
+  return (
+    <React.Fragment>
+      {view}
+      {isScrollToTopVisible && (
+        <button
+          onClick={scrollToTop}
+          className="fixed bottom-8 right-8 z-50 bg-figmaDark text-figmaGold border border-gray-700/40 w-12 h-12 rounded-full flex items-center justify-center shadow-lg shadow-black/20 hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer"
+          aria-label="Scroll to top"
+        >
+          <IcoChevronUp size={20} className="stroke-[2.5]" />
+        </button>
+      )}
+    </React.Fragment>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
