@@ -139,7 +139,7 @@
     .doc-scroll::-webkit-scrollbar-thumb { background: #c2a67f44; border-radius: 3px; }
 
     /* ── Mobile responsive ── */
-    @media (max-width: 767px) {
+    @media (max-width: 1023px) {
       .hero-clip { clip-path: none; }
     }
   </style>
@@ -956,12 +956,12 @@ function Header({ language, setLanguage }) {
     <header className={`fixed top-0 inset-x-0 z-50 bg-white transition-shadow duration-200 ${
       shadow ? 'shadow-[0_2px_16px_rgba(26,43,73,0.10)]' : 'border-b border-gray-100'
     }`}>
-      <div className="max-w-7xl mx-auto px-10 h-[72px] flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-4 md:px-10 h-[72px] flex items-center justify-between">
         <button onClick={() => goTo('home')}
           className="font-serif text-[17px] font-bold text-figmaDark tracking-[0.22em] hover:text-figmaGold transition-colors select-none">
           TRANG NHA
         </button>
-        <nav className="hidden md:flex items-center gap-12">
+        <nav className="hidden md:flex items-center gap-6 lg:gap-12">
           {NAV_IDS.map(id => (
             <button key={id} onClick={() => goTo(id)}
               className={`text-[13px] tracking-[0.09em] transition-all pb-[2px] ${
@@ -996,65 +996,70 @@ function Header({ language, setLanguage }) {
 function HomeSection({ language }) {
   const T = TRANSLATIONS[language].hero;
   return (
-    <section id="home" className="flex overflow-hidden bg-white" style={{ minHeight: '100vh', paddingTop: '72px' }}>
+    <section id="home" style={{ paddingTop: '72px' }}>
+      {/* Container chính: xếp dọc trên mobile, dàn ngang trên desktop */}
+      <div className="flex flex-col lg:flex-row bg-white overflow-hidden" style={{ minHeight: 'calc(100vh - 72px)' }}>
 
-      {/* Khối lề trái màu xanh sẫm */}
-      <div className="hero-clip bg-figmaDark flex-shrink-0 flex items-center"
-        style={{ width: '53%', minHeight: 'calc(100vh - 72px)' }}>
-        <div style={{ paddingLeft: '112px', paddingRight: '40px', maxWidth: '640px' }}>
-          {/* Tiêu đề phụ Business Analyst */}
-          <span className="text-figmaGold text-[13px] font-medium tracking-[0.12em] block mb-2">
-            — Business Analyst
-          </span>
-          <h1 className="font-serif font-bold leading-[1.08] mb-8" style={{ fontSize: 'clamp(2.8rem, 4.4vw, 4.2rem)' }}>
-            <span className="text-figmaGold block whitespace-nowrap">{T.name1}</span>
-            <span className="text-white block">{T.name2}</span>
-          </h1>
-          <div className="border-l-[3px] border-figmaGold/60 pl-4 mb-10">
-            <p className="text-gray-300 text-[14px] leading-[2] max-w-2xl">{T.bio}</p>
-          </div>
-          <div className="flex flex-wrap gap-4">
-            <a href={language === 'EN' ? './CV_EN.pdf' : './CV_VI.pdf'}
-              target="_blank" rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 bg-figmaGold text-white text-[13px] font-semibold px-6 py-3 rounded hover:brightness-110 transition-all">
-              <IcoDownload size={15} /> {T.downloadCV}
-            </a>
-            <button onClick={() => goTo('about')}
-              className="inline-flex items-center gap-2 bg-white text-figmaDark text-[13px] font-semibold px-6 py-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-all">
-              {T.aboutMe} <IcoArrow size={15} />
-            </button>
+        {/* Khối lề trái màu xanh sẫm */}
+        <div className="hero-clip w-full lg:w-[53%] bg-figmaDark py-12 lg:py-0 flex items-center" style={{ minHeight: 'auto' }}>
+          <div className="w-full px-6 sm:px-12 md:pl-20 lg:pl-[112px] lg:pr-10 max-w-2xl lg:max-w-[640px] mx-auto lg:mx-0">
+            {/* Tiêu đề phụ Business Analyst */}
+            <span className="text-figmaGold text-[13px] font-medium tracking-[0.12em] block mb-2">
+              — Business Analyst
+            </span>
+            <h1 className="font-serif font-bold leading-[1.08] mb-8" style={{ fontSize: 'clamp(2.8rem, 4.4vw, 4.2rem)' }}>
+              <span className="text-figmaGold block whitespace-nowrap">{T.name1}</span>
+              <span className="text-white block">{T.name2}</span>
+            </h1>
+            <div className="border-l-[3px] border-figmaGold/60 pl-4 mb-10">
+              <p className="text-gray-300 text-[14px] leading-[2] max-w-2xl">{T.bio}</p>
+            </div>
+            <div className="flex flex-wrap gap-4">
+              <a href={language === 'EN' ? './CV_EN.pdf' : './CV_VI.pdf'}
+                target="_blank" rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 bg-figmaGold text-white text-[13px] font-semibold px-6 py-3 rounded hover:brightness-110 transition-all">
+                <IcoDownload size={15} /> {T.downloadCV}
+              </a>
+              <button onClick={() => goTo('about')}
+                className="inline-flex items-center gap-2 bg-white text-figmaDark text-[13px] font-semibold px-6 py-3 rounded-md border border-gray-200 hover:bg-gray-50 transition-all">
+                {T.aboutMe} <IcoArrow size={15} />
+              </button>
+            </div>
           </div>
         </div>
-      </div>
 
-      {/* Khối lề phải — hộp container khóa cứng kích thước neo tọa độ */}
-      <div className="flex-1 bg-white flex items-center justify-center" style={{ minHeight: 'calc(100vh - 72px)' }}>
-        <div className="relative flex-shrink-0 select-none" style={{ width: '310px', height: '430px' }}>
+        {/* Khối lề phải — hộp container khóa cứng kích thước neo tọa độ */}
+        <div className="w-full lg:flex-1 bg-white flex items-center justify-center py-16 lg:py-0">
+          <div className="px-10 sm:px-16 lg:px-0 overflow-visible flex items-center justify-center">
+            <div className="relative flex-shrink-0 select-none" style={{ width: '310px', height: '430px' }}>
 
-          {/* Khung ảnh Polaroid phẳng đứng, xoay nghiêng nhẹ 2 độ */}
-          <div className="photo-frame shadow-2xl absolute inset-0" style={{ transform: 'rotate(2deg)', padding: '10px 10px 44px 10px', background: '#ffffff', borderRadius: '4px' }}>
-            <img
-              src="./screenshots/ava1.png"
-              alt="Nguyễn Thị Trang Nhã"
-              style={{ width: '290px', height: '376px', objectFit: 'cover', display: 'block', borderRadius: '2px' }}
-            />
+              {/* Khung ảnh Polaroid phẳng đứng, xoay nghiêng nhẹ 2 độ */}
+              <div className="photo-frame shadow-2xl absolute inset-0" style={{ transform: 'rotate(2deg)', padding: '10px 10px 44px 10px', background: '#ffffff', borderRadius: '4px' }}>
+                <img
+                  src="./screenshots/ava1.png"
+                  alt="Nguyễn Thị Trang Nhã"
+                  style={{ width: '290px', height: '376px', objectFit: 'cover', display: 'block', borderRadius: '2px' }}
+                />
+              </div>
+
+              {/* Tag nổi góc trên bên trái — ghim đè mép trên bên trái */}
+              <div className="absolute z-20 flex items-center gap-[7px] bg-white rounded-full px-4 py-[7px] shadow-lg text-[12px] font-medium text-figmaDark whitespace-nowrap"
+                style={{ top: '-14px', left: '-20px' }}>
+                <span className="w-[7px] h-[7px] rounded-full bg-figmaDark flex-shrink-0" />
+                {T.badge1}
+              </div>
+
+              {/* Tag nổi góc dưới bên phải — ghim đè mép dưới bên phải */}
+              <div className="absolute z-20 flex items-center gap-[7px] bg-white rounded-full px-4 py-[7px] shadow-lg text-[12px] font-medium text-figmaDark whitespace-nowrap"
+                style={{ bottom: '-12px', right: '-24px' }}>
+                <span className="w-[7px] h-[7px] rounded-full bg-figmaDark flex-shrink-0" />
+                {T.badge2}
+              </div>
+
+            </div>
           </div>
-
-          {/* Tag nổi góc trên bên trái — ghim đè mép trên bên trái */}
-          <div className="absolute z-20 flex items-center gap-[7px] bg-white rounded-full px-4 py-[7px] shadow-lg text-[12px] font-medium text-figmaDark whitespace-nowrap"
-            style={{ top: '-14px', left: '-20px' }}>
-            <span className="w-[7px] h-[7px] rounded-full bg-figmaDark flex-shrink-0" />
-            {T.badge1}
-          </div>
-
-          {/* Tag nổi góc dưới bên phải — ghim đè mép dưới bên phải */}
-          <div className="absolute z-20 flex items-center gap-[7px] bg-white rounded-full px-4 py-[7px] shadow-lg text-[12px] font-medium text-figmaDark whitespace-nowrap"
-            style={{ bottom: '-12px', right: '-24px' }}>
-            <span className="w-[7px] h-[7px] rounded-full bg-figmaDark flex-shrink-0" />
-            {T.badge2}
-          </div>
-
         </div>
+
       </div>
     </section>
   );
@@ -1068,7 +1073,7 @@ function AboutSection({ language }) {
   const ta = T.about;
   return (
     <section id="about" className="bg-white py-24">
-      <div className="max-w-6xl mx-auto px-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-10">
         <SecLabel label={ta.label} />
 
         {/* Grid starts here — both headings are siblings at the same level */}
@@ -1119,7 +1124,7 @@ function SkillsSection({ language, onOpenSystemDesign, onOpenUIUXDesign, onOpenV
   const ts = T.skills;
   return (
     <section id="skills" className="bg-figmaDark py-24">
-      <div className="max-w-6xl mx-auto px-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-10">
         <div className="w-full text-left mb-12 flex flex-col items-start">
           <SecLabel label={ts.label} onDark />
           <h2 className="font-serif font-bold text-white" style={{ fontSize: '2.7rem' }}>
@@ -1174,7 +1179,7 @@ function ProjectsSection({ language, onOpenProject }) {
   const tp = T.projects;
   return (
     <section id="projects" className="bg-figmaLightBg py-24">
-      <div className="max-w-6xl mx-auto px-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-10">
         <div className="w-full text-left mb-12 flex flex-col items-start">
           <SecLabel label={tp.label} />
           <h2 className="font-serif font-bold text-figmaDark" style={{ fontSize: '2.7rem' }}>
@@ -1238,7 +1243,7 @@ function ContactSection({ language }) {
 
   return (
     <section id="contact" className="bg-figmaDark py-24">
-      <div className="max-w-6xl mx-auto px-10">
+      <div className="max-w-6xl mx-auto px-4 md:px-10">
         <div className="w-full text-left mb-12 flex flex-col items-start">
           <SecLabel label={tc.label} onDark />
           <h2 className="font-serif font-bold" style={{ fontSize: '2.7rem' }}>
@@ -2048,7 +2053,6 @@ function VibeCodingDetailView({ onBack, onOpenUIUX, language }) {
 
   const DocSection = ({ label, src }) => (
     <div className="mb-10">
-      {/* Centered section divider */}
       <SectionDivider label={label} />
       <ImgCard src={src} />
     </div>
@@ -2112,6 +2116,24 @@ function VibeCodingDetailView({ onBack, onOpenUIUX, language }) {
 
           <DocSection label="MULTI-AGENT SYSTEM ARCHITECTURE" src="./vibecoding/eng1.png" />
           <DocSection label="MY VIBE CODING WORKFLOW"         src="./vibecoding/eng2.png" />
+
+          {/* ── DEMO RESULT — nối tiếp dọc phía dưới workflow ── */}
+          <div className="mt-16 pt-16 border-t border-gray-100 flex flex-col items-center w-full">
+            <h2 className="text-2xl font-bold text-figmaDark tracking-wider uppercase text-center mb-2">
+              DEMO RESULT
+            </h2>
+            <div className="w-12 h-[2px] bg-figmaGold mb-8"></div>
+            <div className="w-full max-w-4xl rounded-xl shadow-2xl bg-transparent border border-gray-200/5 h-auto mb-12">
+              <video
+                src="vibecoding/video.mp4"
+                controls
+                playsInline
+                className="w-full h-auto block rounded-xl"
+              >
+                Trình duyệt của bạn không hỗ trợ phát video.
+              </video>
+            </div>
+          </div>
 
           {/* ── Footer navigation ── */}
           <div className="flex justify-between items-center w-full max-w-6xl mx-auto px-4 py-12 mt-12 border-t border-gray-100 bg-transparent">
@@ -2226,5 +2248,6 @@ function App() {
 
 ReactDOM.createRoot(document.getElementById('root')).render(<App />);
 </script>
+<script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
